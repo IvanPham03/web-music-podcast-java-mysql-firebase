@@ -12,10 +12,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "playlist_song")
-public class Playlist_song {
+public class PlaylistSong {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column (name = "isOwner")
+    private boolean isOwner;
     @Column(name = "playlistId")
     private String playlistId;
     @Column(name = "songId")

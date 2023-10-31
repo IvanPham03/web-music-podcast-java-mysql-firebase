@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,4 +23,8 @@ public class Album {
     private String albumName;
     @Column(name = "albumGenre")
     private String albumGenre;
+
+    // 1 nhiều tới bảng album_song
+    @OneToMany(mappedBy = "albumFk")
+    private List<AlbumSong> albumSongs = new ArrayList<>();
 }

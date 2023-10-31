@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,5 +28,10 @@ public class Playlist {
     private String imgPlaylist;
     @Column(name = "timestamp")
     private String timestamp;
+
+
+    // 1 n tới bảng user_playlist
+    @OneToMany(mappedBy = "playlistFk", cascade = CascadeType.ALL)
+    private Set<UserPlaylist> userPlaylists;
 
 }

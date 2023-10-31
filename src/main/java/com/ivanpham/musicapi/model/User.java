@@ -33,6 +33,16 @@ public class User {
     private String timestamp;
     @Column(name = "role")
     private String role;
-    @OneToMany (mappedBy = "user")
-    private List<Song> songList = new ArrayList<>();
+
+    // mối quan hệ một nhiều với bảng song
+    @OneToMany (mappedBy = "songFK")
+    private List<Song> songs = new ArrayList<>();
+
+    // mối quan hệ một nhiều với bảng user_playlist
+    @OneToMany(mappedBy = "userFK", cascade = CascadeType.ALL)
+    private List<UserPlaylist> userPlaylists = new ArrayList<>();
+
+
+    //
+
 }

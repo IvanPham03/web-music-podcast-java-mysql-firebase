@@ -11,13 +11,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "album_song")
-public class Album_song {
+@Table(name = "artist_song")
+public class ArtistSong {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "albumId")
-    private String albumId;
+    @Column(name = "artistId")
+    private String artistId;
     @Column(name = "songId")
     private String songId;
+
+    // ánh xạ tới artist
+    @ManyToOne
+    @JoinColumn(name = "artistSongFk")
+    private Song artistSongFk;
 }

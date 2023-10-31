@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,4 +29,9 @@ public class Artist {
     private String email;
     @Column(name = "timestamp")
     private String timestamp;
+
+
+    // 1 nhiều tới bảng artist_song
+    @OneToMany (mappedBy = "artistFk")
+    private List<ArtistSong> artistSongs = new ArrayList<>();
 }
