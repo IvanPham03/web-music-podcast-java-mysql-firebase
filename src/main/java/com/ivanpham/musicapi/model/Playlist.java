@@ -1,11 +1,10 @@
 package com.ivanpham.musicapi.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -32,6 +31,10 @@ public class Playlist {
 
     // 1 n tới bảng user_playlist
     @OneToMany(mappedBy = "playlistFk", cascade = CascadeType.ALL)
-    private Set<UserPlaylist> userPlaylists;
+    private List<UserPlaylist> userPlaylists = new ArrayList<>();
+
+    // 1 n tới bảng playlist_song
+    @OneToMany(mappedBy = "playlist2Fk", cascade = CascadeType.ALL)
+    private List<PlaylistSong>  playlistSongs = new ArrayList<>();
 
 }

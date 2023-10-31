@@ -25,5 +25,5 @@ public class AlbumSong {
     // ánh xạ tới bảng album
     @ManyToOne
     @JoinColumn(name = "albumFk")
-    private Song albumFk;
+    private Album albumFk;
 }

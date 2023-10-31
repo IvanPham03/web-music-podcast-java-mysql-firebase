@@ -37,8 +37,12 @@ public class Song {
     @OneToMany(mappedBy = "albumSongFk")
     private List<AlbumSong> albumSongs = new ArrayList<>();
 
-    // 1 n tới bảng artist
+    // 1 n tới bảng artist_song
     @OneToMany(mappedBy = "artistSongFk")
     private List<ArtistSong> artistSongs = new ArrayList<>();
+
+    // 1 n tới bảng playlist_song
+    @OneToMany(mappedBy = "playlistSongFk")
+    private List<PlaylistSong> playlistSongs = new ArrayList<>();
 
 }

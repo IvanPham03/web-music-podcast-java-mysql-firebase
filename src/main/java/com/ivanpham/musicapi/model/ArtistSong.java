@@ -16,12 +16,13 @@ public class ArtistSong {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "artistId")
-    private String artistId;
-    @Column(name = "songId")
-    private String songId;
 
     // ánh xạ tới artist
+    @ManyToOne
+    @JoinColumn(name = "artistFk")
+    private Artist artistFk;
+
+    // ánh xạ tới song
     @ManyToOne
     @JoinColumn(name = "artistSongFk")
     private Song artistSongFk;

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,8 +20,14 @@ public class PlaylistSong {
     private long id;
     @Column (name = "isOwner")
     private boolean isOwner;
-    @Column(name = "playlistId")
-    private String playlistId;
-    @Column(name = "songId")
-    private String songId;
+
+    // ánh xạ tới bảng song
+    @ManyToOne
+    @JoinColumn (name = "playlistSongFk")
+    private Song playlistSongFk;
+
+    // ánh xạ tới bảng playlist
+    @ManyToOne
+    @JoinColumn (name = "playlist2Fk")
+    private Playlist playlist2Fk;
 }
