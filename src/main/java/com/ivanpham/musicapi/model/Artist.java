@@ -21,8 +21,6 @@ public class Artist {
     private long id;
     @Column(name = "artistName")
     private String artistName;
-    @Column(name = "db")
-    private String db;
     @Column(name = "description")
     private String description;
     @Column(name = "email")
