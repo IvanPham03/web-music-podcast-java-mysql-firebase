@@ -1,4 +1,4 @@
-package service;
+package com.ivanpham.musicapi.service;
 
 import com.ivanpham.musicapi.model.Artist;
 
