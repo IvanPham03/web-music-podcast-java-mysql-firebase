@@ -29,7 +29,7 @@ public class Artist {
     private String timestamp;
 
 
-    // 1 nhiều tới bảng artist_song
+    // 1 nhiều tới bảng artist_track
     @OneToMany (mappedBy = "artistFk")
-    private List<ArtistSong> artistSongs = new ArrayList<>();
+    private List<ArtistTrack> artistTracks = new ArrayList<>();
 }

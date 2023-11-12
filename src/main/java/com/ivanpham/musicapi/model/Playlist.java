@@ -5,7 +5,6 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -33,8 +32,8 @@ public class Playlist {
     @OneToMany(mappedBy = "playlistFk", cascade = CascadeType.ALL)
     private List<UserPlaylist> userPlaylists = new ArrayList<>();
 
-    // 1 n tới bảng playlist_song
+    // 1 n tới bảng playlist_track
     @OneToMany(mappedBy = "playlist2Fk", cascade = CascadeType.ALL)
-    private List<PlaylistSong>  playlistSongs = new ArrayList<>();
+    private List<PlaylistTrack> playlistTracks = new ArrayList<>();
 
 }

@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "artist_song")
-public class ArtistSong {
+@Table(name = "artist_track")
+public class ArtistTrack {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -22,8 +22,8 @@ public class ArtistSong {
     @JoinColumn(name = "artistFk")
     private Artist artistFk;
 
-    // ánh xạ tới song
+    // ánh xạ tới track
     @ManyToOne
-    @JoinColumn(name = "artistSongFk")
-    private Song artistSongFk;
+    @JoinColumn(name = "artistTrackFk")
+    private Track artistTrackFk;
 }

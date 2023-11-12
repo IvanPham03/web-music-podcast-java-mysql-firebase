@@ -11,19 +11,21 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "album_song")
-public class AlbumSong {
+@Table(name = "playlist_track")
+public class PlaylistTrack {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column (name = "isOwner")
+    private boolean isOwner;
 
-    // ánh xạ tới bảng song
+    // ánh xạ tới bảng Track
     @ManyToOne
-    @JoinColumn(name = "albumSongFk")
-    private Song albumSongFk;
+    @JoinColumn (name = "playlistTrackFk")
+    private Track playlistTrackFk;
 
-    // ánh xạ tới bảng album
+    // ánh xạ tới bảng playlist
     @ManyToOne
-    @JoinColumn(name = "albumFk")
-    private Album albumFk;
+    @JoinColumn (name = "playlist2Fk")
+    private Playlist playlist2Fk;
 }

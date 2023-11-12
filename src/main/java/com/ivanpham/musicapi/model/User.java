@@ -34,9 +34,9 @@ public class User {
     @Column(name = "role")
     private String role;
 
-    // mối quan hệ một nhiều với bảng song
-    @OneToMany (mappedBy = "songFK")
-    private List<Song> songs = new ArrayList<>();
+    // mối quan hệ một nhiều với bảng track
+    @OneToMany (mappedBy = "trackFK")
+    private List<Track> tracks = new ArrayList<>();
 
     // mối quan hệ một nhiều với bảng user_playlist
     @OneToMany(mappedBy = "userFK", cascade = CascadeType.ALL)

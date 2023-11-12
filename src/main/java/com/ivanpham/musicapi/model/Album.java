@@ -24,7 +24,7 @@ public class Album {
     @Column(name = "albumGenre")
     private String albumGenre;
 
-    // 1 nhiều tới bảng album_song
+    // 1 nhiều tới bảng album_track
     @OneToMany(mappedBy = "albumFk")
-    private List<AlbumSong> albumSongs = new ArrayList<>();
+    private List<AlbumTrack> albumTracks = new ArrayList<>();
 }
