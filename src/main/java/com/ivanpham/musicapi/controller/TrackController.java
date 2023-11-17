@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/tracks")
 public class TrackController {
     private static final String UPLOAD_DIR = "/path/to/upload/directory"; // Đường dẫn thư mục lưu trữ file
-    @Autowired
+//    @Autowired
     private TrackRepository trackRepository;
     @GetMapping
     @ResponseBody

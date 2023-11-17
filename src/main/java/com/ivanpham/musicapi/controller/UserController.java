@@ -2,7 +2,10 @@ package com.ivanpham.musicapi.controller;
 import com.ivanpham.musicapi.repository.UserRepository;
 import com.ivanpham.musicapi.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 
 
@@ -18,9 +21,10 @@ public class UserController {
 
     // build create user REST API
     // get all users
-    @GetMapping
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
-    }
+//    public List<User> getAllUsers(){
+//        return userRepository;
+//    }
+//    @GetMapping("/{id}")
+//    public List<User> authUser(@ResponseBody )
 
 }

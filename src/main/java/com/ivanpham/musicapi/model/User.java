@@ -1,9 +1,7 @@
 package com.ivanpham.musicapi.model;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +12,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Data
+@Builder
 @Table(name= "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // id được đánh dấu là khóa chính và giá trị của nó sẽ được tạo ra tự động bằng cách sử dụng trường tự tăng của cơ sở dữ liệu.
-    private long id;
+    private String id;
     @Column(name = "username")
     private String username;
     @Column(name = "email")
@@ -29,6 +29,8 @@ public class User {
     private String password;
     @Column(name = "imgUser")
     private String imgUser;
+    @Column(name = "state")
+    private State state;
     @Column(name = "timestamp")
     private String timestamp;
     @Column(name = "role")
