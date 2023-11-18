@@ -54,4 +54,20 @@ public class AlbumController {
     public void deleteAlbumById(@PathVariable Long id) {
             albumService.deleteById(id);
     }
+
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Album> updateAlbum(@PathVariable Long id,@RequestBody Album albumData){
+        Optional<Album> optionalAlbum = albumRepository.findById(id);
+        if(optionalAlbum.isPresent()){
+            Album upAlbum = optionalAlbum.get();
+            if(upAlbum.getAlbumGenre() != null)
+                upAlbum.setAlbumGenre(albumData.getAlbumGenre());
+            if(upAlbum.getAlbumName() != null)
+                upAlbum.setAlbumName(albumData.getAlbumName());
+            albumRepository.save(upAlbum);
+            return ResponseEntity.ok(upAlbum);
+        }
+        else
+            return ResponseEntity.notFound().build();
+    }
 }
