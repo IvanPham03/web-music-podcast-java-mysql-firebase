@@ -19,12 +19,13 @@ public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "albumName")
+    @Column(name = "album_name")
     private String albumName;
-    @Column(name = "albumGenre")
+    @Column(name = "album_genre")
     private String albumGenre;
 
     // 1 nhiều tới bảng album_track
     @OneToMany(mappedBy = "albumFk")
     private List<AlbumTrack> albumTracks = new ArrayList<>();
+
 }
