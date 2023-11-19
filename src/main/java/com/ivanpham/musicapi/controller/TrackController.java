@@ -1,5 +1,5 @@
 package com.ivanpham.musicapi.controller;
-import java.io.File;
+
 import com.ivanpham.musicapi.model.Track;
 import com.ivanpham.musicapi.repository.TrackRepository;
 import com.ivanpham.musicapi.service.TrackService;
@@ -9,7 +9,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,7 +22,7 @@ import java.util.Optional;
 @RequestMapping("/tracks")
 public class TrackController {
     private static final String UPLOAD_DIR = "/path/to/upload/directory"; // Đường dẫn thư mục lưu trữ file
-    @Autowired
+//    @Autowired
     private TrackRepository trackRepository;
     private TrackService trackService;
     @GetMapping
@@ -142,6 +141,7 @@ public class TrackController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+<<<<<<< Track
 
 //        @PostMapping("/upload")
 //    public ResponseEntity<String> addTrack(@RequestBody Track track, @RequestParam("file") MultipartFile file) {
@@ -184,6 +184,28 @@ public class TrackController {
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
 //    }
+=======
+    @GetMapping("/{id}")
+    public ResponseEntity<Track> getTrackById(@PathVariable Long id) {
+        try {
+            // Sử dụng findById để lấy đối tượng theo ID
+            java.util.Optional<Track> optionalTrack = trackRepository.findById(id);
+
+            // Kiểm tra xem đối tượng có tồn tại hay không
+            if (optionalTrack.isPresent()) {
+                // Nếu tồn tại, trả về đối tượng Track
+                return new ResponseEntity<>(optionalTrack.get(), HttpStatus.OK);
+            } else {
+                // Nếu không tồn tại, trả về HTTP 404 Not Found
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            // Xử lý ngoại lệ và trả về HTTP 500 Internal Server Error
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+>>>>>>> main
 //    @PostMapping("/upload")
 //    public ResponseEntity<String> addTrack(@RequestBody Track track, @RequestParam("file") MultipartFile file) {
 //        try {
