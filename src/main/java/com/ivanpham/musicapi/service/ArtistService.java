@@ -6,8 +6,7 @@ import java.util.List;
 
 public interface ArtistService {
     List<Artist> getAllArtist();
-    Artist addArtist();
-    Artist getAllArtistById(long id);
+    List<Artist> getArtistByName(String name);
     void deleteArtistById(long id);
     void saveArtist(Artist artist);
 }
