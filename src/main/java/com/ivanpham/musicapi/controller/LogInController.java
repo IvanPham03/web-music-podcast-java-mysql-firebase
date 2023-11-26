@@ -1,46 +1,51 @@
 package com.ivanpham.musicapi.controller;
 
-import com.ivanpham.musicapi.exception.UserException;
-import com.ivanpham.musicapi.request.LoginRequest;
+import com.ivanpham.musicapi.dto.UserDTO;
+import com.ivanpham.musicapi.model.User;
+import com.ivanpham.musicapi.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.validation.Valid;
-
 
 @Controller
-@RequestMapping("/")
 public class LogInController {
-    @GetMapping
-    public String showHomePage(){
-        return "index";
+
+    private UserService userService;
+    //    private ProductService productService;
+    public LogInController(UserService userService) {
+        this.userService = userService;
     }
 
-    @GetMapping("login")
-    public String showLogin(Model model){
-        model.addAttribute("loginrequest", new LoginRequest("",""));
+    @GetMapping("/login")
+    public String loginForm() {
         return "login";
     }
-
-    @PostMapping("login")
-    public String handleLogin(@Valid @ModelAttribute("loginrequest")LoginRequest loginRequest, BindingResult result){
-        if(result.hasErrors()){
-            return "login";
-        }
-        return "redirect:/";
-    }
-
+    // handler method to handle user registration request
     @GetMapping("register")
-    public String showRegisterForm(){
+    public String showRegistrationForm(Model model){
+        UserDTO user = new UserDTO();
+        model.addAttribute("user", user);
         return "register";
     }
-    @GetMapping("foo")
-    public String foo(){
-        throw new UserException("Some error");
+    // handler method to handle register user form submit request
+    @PostMapping("/register/save")
+    public String registration(@Valid @ModelAttribute("user") UserDTO user,
+                               BindingResult result,
+                               Model model){
+        User existing = userService.findByEmail(user.getEmail());
+        if (existing != null) {
+            result.rejectValue("email", null, "There is already an account registered with that email");
+        }
+        if (result.hasErrors()) {
+            model.addAttribute("user", user);
+            return "register";
+        }
+        userService.saveUser(user);
+        return "redirect:/register?success";
     }
 }
+

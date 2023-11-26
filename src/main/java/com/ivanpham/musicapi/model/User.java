@@ -17,24 +17,24 @@ import java.util.List;
 @Table(name= "user")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // id được đánh dấu là khóa chính và giá trị của nó sẽ được tạo ra tự động bằng cách sử dụng trường tự tăng của cơ sở dữ liệu.
-    private String id;
-    @Column(name = "username")
-    private String username;
-    @Column(name = "email")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable=false)
+    private String name;
+
+    @Column(nullable=false, unique=true)
     private String email;
-    @Column(name = "phoneNumber")
-    private String phoneNumber;
-    @Column(name = "password")
+
+    @Column(nullable=false)
     private String password;
-    @Column(name = "imgUser")
-    private String imgUser;
-    @Column(name = "state")
-    private State state;
-    @Column(name = "timestamp")
-    private String timestamp;
-    @Column(name = "role")
-    private String role;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @JoinTable(
+            name="users_roles",
+            joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="ID")},
+            inverseJoinColumns={@JoinColumn(name="ROLE_ID", referencedColumnName="ID")})
+    private List<Role> roles = new ArrayList<>();
 
     // mối quan hệ một nhiều với bảng track
     @OneToMany (mappedBy = "trackFK")
