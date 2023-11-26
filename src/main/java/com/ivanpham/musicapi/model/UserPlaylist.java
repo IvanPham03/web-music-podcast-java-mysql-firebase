@@ -1,10 +1,14 @@
 package com.ivanpham.musicapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -12,19 +16,18 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "user_playlist")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class UserPlaylist {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // id được đánh dấu là khóa chính và giá trị của nó sẽ được tạo ra tự động bằng cách sử dụng trường tự tăng của cơ sở dữ liệu.
-    private long id;
+    private String id = UUID.randomUUID().toString();
 
-    // trỏ tới bảng user
     @ManyToOne
-    @JoinColumn(name = "userFk")
-    private User userFK;
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    // trỏ tới bảng playlist
     @ManyToOne
-    @JoinColumn(name = "playlistFk")
-    private Playlist playlistFk;
-
+    @JoinColumn(name = "playlist_id")
+    private Playlist playlist;
 }

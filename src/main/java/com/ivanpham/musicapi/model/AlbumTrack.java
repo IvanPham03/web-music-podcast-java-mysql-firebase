@@ -1,10 +1,14 @@
 package com.ivanpham.musicapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -12,18 +16,18 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "album_track")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class AlbumTrack {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private String id = UUID.randomUUID().toString();
 
-    // ánh xạ tới bảng track
     @ManyToOne
-    @JoinColumn(name = "albumTrackFk")
-    private Track albumTrackFk;
+    @JoinColumn(name = "album_id")
+    private Album album;
 
-    // ánh xạ tới bảng album
     @ManyToOne
-    @JoinColumn(name = "albumFk")
-    private Album albumFk;
+    @JoinColumn(name = "track_id")
+    private Track track;
 }

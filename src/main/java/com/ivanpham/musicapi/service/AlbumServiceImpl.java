@@ -9,25 +9,25 @@ import java.util.List;
 
 @Component
 public class AlbumServiceImpl implements AlbumService{
-    @Autowired
-    private AlbumRepository albumRepository;
-    @Override
-    public List<Album> getAllAlbums() {
-        return albumRepository.findAll();
-    }
-
-    @Override
-    public void createAlbum(Album album) {
-        albumRepository.save(album);
-    }
-
-    @Override
-    public Album getAlbumById(int id) {
-        return null;
-    }
-
-    @Override
-    public void deleteById(long id) {
-        albumRepository.deleteById(id);
-    }
+//    @Autowired
+//    private AlbumRepository albumRepository;
+//    @Override
+//    public List<Album> getAllAlbums() {
+//        return albumRepository.findAll();
+//    }
+//
+//    @Override
+//    public void createAlbum(Album album) {
+//        albumRepository.save(album);
+//    }
+//
+//    @Override
+//    public Album getAlbumById(int id) {
+//        return null;
+//    }
+//
+//    @Override
+//    public void deleteById(long id) {
+//        albumRepository.deleteById(id);
+//    }
 }

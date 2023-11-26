@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 public interface AlbumService {
-    public List<Album> getAllAlbums();
-
-    void createAlbum(Album album);
-
-    public Album getAlbumById(int id);
-
-    public void deleteById(long id);
+//    public List<Album> getAllAlbums();
+//
+//    void createAlbum(Album album);
+//
+//    public Album getAlbumById(int id);
+//
+//    public void deleteById(long id);
 }

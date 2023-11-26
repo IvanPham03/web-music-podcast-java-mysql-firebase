@@ -1,31 +1,57 @@
 package com.ivanpham.musicapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "album")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Album {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private String id = UUID.randomUUID().toString();
     @Column(name = "album_name")
     private String albumName;
     @Column(name = "album_genre")
     private String albumGenre;
-
-    // 1 nhiều tới bảng album_track
-    @OneToMany(mappedBy = "albumFk")
+    @Column(name = "createAt")
+    private String createAt; // Sử dụng kiểu Timestamp
+    @Column(name = "updateOn")
+    private String updateOn;
+    @OneToMany(mappedBy = "album")
     private List<AlbumTrack> albumTracks = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    public Album()
+    {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+        this.createAt = timeStamp;
+        this.updateOn = timeStamp;
+    }
+
+    //
+    public Album(String albumName, String albumGenre, User user ){
+        this.albumGenre = albumGenre;
+        this.albumName = albumName;
+        this.user = user;
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+        this.createAt = timeStamp;
+        this.updateOn = timeStamp;
+    }
 
 }
+
+

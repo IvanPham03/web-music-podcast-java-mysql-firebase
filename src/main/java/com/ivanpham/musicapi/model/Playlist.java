@@ -1,42 +1,57 @@
 package com.ivanpham.musicapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "playlist")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Playlist {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Column(name = "playlistOwnerId")
-    private String playlistOwnerId;
+    private String id = UUID.randomUUID().toString();
     @Column(name = "playlistName")
     private String playlistName;
     @Column(name = "playlistDescription")
     private String playlistDescription;
     @Column(name = "imgPlaylist")
     private String imgPlaylist;
-    @Column(name = "timestamp")
-    private String timestamp;
+    @Column(name = "createAt")
+    private String createAt; // Sử dụng kiểu Timestamp
+    @Column(name = "updateOn")
+    private String updateOn;
 
-
-    // 1 n tới bảng user_playlist
-    @OneToMany(mappedBy = "playlistFk", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "playlist")
     private List<UserPlaylist> userPlaylists = new ArrayList<>();
 
-    // 1 n tới bảng playlist_track
-    @OneToMany(mappedBy = "playlist2Fk", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "playlist")
     private List<PlaylistTrack> playlistTracks = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    public Playlist(){
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+        this.createAt = timeStamp;
+        this.updateOn = timeStamp;
+    }
 
+    public Playlist(String playlistName, User user){
+        this.playlistName = playlistName;
+        this.user = user;
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+        this.createAt = timeStamp;
+        this.updateOn = timeStamp;
+    }
 }

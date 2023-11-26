@@ -1,31 +1,34 @@
 package com.ivanpham.musicapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Table(name = "playlist_track")
 public class PlaylistTrack {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Column (name = "isOwner")
-    private boolean isOwner;
-
-    // ánh xạ tới bảng Track
+    private String id = UUID.randomUUID().toString();
     @ManyToOne
-    @JoinColumn (name = "playlistTrackFk")
-    private Track playlistTrackFk;
+    @JoinColumn(name = "playlist_id")
+    private Playlist playlist;
 
-    // ánh xạ tới bảng playlist
     @ManyToOne
-    @JoinColumn (name = "playlist2Fk")
-    private Playlist playlist2Fk;
+    @JoinColumn(name = "track_id")
+    private Track track;
+
+
 }

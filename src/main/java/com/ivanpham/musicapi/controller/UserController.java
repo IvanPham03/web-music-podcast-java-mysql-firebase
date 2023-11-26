@@ -1,12 +1,16 @@
 package com.ivanpham.musicapi.controller;
 import com.ivanpham.musicapi.repository.UserRepository;
 import com.ivanpham.musicapi.model.User;
+import com.ivanpham.musicapi.repository.UserRepository2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
+import java.util.Optional;
 
 
 @CrossOrigin("*")
@@ -17,14 +21,69 @@ public class UserController {
 // UserRepository là một interface dùng để truy cập và tương tác
 // với cơ sở dữ liệu để thực hiện các thao tác CRUD (Create, Read, Update, Delete) cho đối tượng User.
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository2 userRepository;
+    // lấy tất cả
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return ResponseEntity.ok(users);
+    }
+    // lấy bằng id
+    @GetMapping("/users/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable("id") String id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        return userOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    // tạo người dùng mới
+    @PostMapping("/add")
+    public ResponseEntity<?> createUser(@RequestBody User newUser) {
+        System.out.println(newUser.toString());
 
-    // build create user REST API
-    // get all users
-//    public List<User> getAllUsers(){
-//        return userRepository;
-//    }
-//    @GetMapping("/{id}")
-//    public List<User> authUser(@ResponseBody )
+        try {
+            // Kiểm tra xem người dùng đã tồn tại hay chưa
+//            if (userRepository.findAllById(newUser.getUsername())) {
+//                return ResponseEntity.badRequest().body("Username is already taken!");
+//            }
+
+            // Lưu người dùng mới vào cơ sở dữ liệu
+            userRepository.save(newUser);
+            return ResponseEntity.ok("User created successfully!");
+        } catch (Exception e) {
+            System.out.println(e);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    //update
+    @PutMapping("/users/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable("id") String id, @RequestBody User updatedUser) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            User existingUser = optionalUser.get();
+            // Update user details
+            existingUser.setUsername(updatedUser.getUsername());
+            existingUser.setEmail(updatedUser.getEmail());
+            // Update other user fields similarly
+
+            userRepository.save(existingUser);
+            return ResponseEntity.ok("User updated successfully!");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // xoá
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable("id") String id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            userRepository.delete(optionalUser.get());
+            return ResponseEntity.ok("User deleted successfully!");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
 }

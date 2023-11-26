@@ -1,49 +1,66 @@
 package com.ivanpham.musicapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "track")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Track {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Column(name = "artistID")
-    private String artistId;
+    private String id = UUID.randomUUID().toString();
     @Column(name = "TrackName")
     private String trackName;
     @Column(name = "description")
     private String description;
-    @Column(name = "timestamp")
-    private Timestamp timestamp; // Sử dụng kiểu Timestamp
+    @Column(name = "url")
+    @NonNull
+    private String url;
+    @Column(name = "createAt")
+    private String createAt; // Sử dụng kiểu Timestamp
+    @Column(name = "updateOn")
+    private String updateOn;
+    @Column(name = "genre")
+    private String genre;
+    @OneToMany(mappedBy = "track")
+    private List<UserTrack> userTracks = new ArrayList<>();
 
-    // ánh xạ tới bảng user
+
     @ManyToOne
-    @JoinColumn(name = "TrackFK")
-    private User trackFK;
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    // 1 n tới bảng album_Track
-    @OneToMany(mappedBy = "albumTrackFk")
+    @OneToMany(mappedBy = "track")
     private List<AlbumTrack> albumTracks = new ArrayList<>();
 
-    // 1 n tới bảng artist_Track
-    @OneToMany(mappedBy = "artistTrackFk")
-    private List<ArtistTrack> artistTracks = new ArrayList<>();
-
-    // 1 n tới bảng playlist_Track
-    @OneToMany(mappedBy = "playlistTrackFk")
+    @OneToMany(mappedBy = "track")
     private List<PlaylistTrack> playlistTracks = new ArrayList<>();
 
+    public Track(){
+        this.description = null;
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+        this.createAt = timeStamp;
+        this.updateOn = timeStamp;
+    }
+
+    public Track(String trackName, String url, String genre,User user) {
+        this.trackName = trackName;
+        this.url = url;
+        this.user = user;
+        this.genre = genre;
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+        this.createAt = timeStamp;
+        this.updateOn = timeStamp;
+    }
 }

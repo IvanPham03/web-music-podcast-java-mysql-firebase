@@ -9,25 +9,25 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 @Component
 public class PlaylistServiceImpl implements PlaylistService{
-    @Autowired
-    private PlaylistRepository playlistRepository;
-    @Override
-    public List<Playlist> getAllPlaylists() {
-        return playlistRepository.findAll();
-    }
-
-    @Override
-    public void createPlaylist(Playlist playlist) {
-        playlistRepository.save(playlist);
-    }
-
-    @Override
-    public Playlist getPlaylistById(int id) {
-        return null;
-    }
-
-    @Override
-    public void deleteById(long id) {
-        playlistRepository.deleteById(id);
-    }
+//    @Autowired
+//    private PlaylistRepository playlistRepository;
+//    @Override
+//    public List<Playlist> getAllPlaylists() {
+//        return playlistRepository.findAll();
+//    }
+//
+//    @Override
+//    public void createPlaylist(Playlist playlist) {
+//        playlistRepository.save(playlist);
+//    }
+//
+//    @Override
+//    public Playlist getPlaylistById(int id) {
+//        return null;
+//    }
+//
+//    @Override
+//    public void deleteById(long id) {
+//        playlistRepository.deleteById(id);
+//    }
 }

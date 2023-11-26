@@ -8,11 +8,11 @@ import java.util.List;
 
 @Service
 public interface PlaylistService {
-    public List<Playlist> getAllPlaylists();
-
-    void createPlaylist(Playlist playlist);
-
-    public Playlist getPlaylistById(int id);
-
-    public void deleteById(long id);
+//    public List<Playlist> getAllPlaylists();
+//
+//    void createPlaylist(Playlist playlist);
+//
+//    public Playlist getPlaylistById(int id);
+//
+//    public void deleteById(long id);
 }
