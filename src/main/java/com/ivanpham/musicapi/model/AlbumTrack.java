@@ -30,4 +30,9 @@ public class AlbumTrack {
     @ManyToOne
     @JoinColumn(name = "track_id")
     private Track track;
+
+    public AlbumTrack(Album album, Track track){
+        this.album = album;
+        this.track = track;
+    }
 }

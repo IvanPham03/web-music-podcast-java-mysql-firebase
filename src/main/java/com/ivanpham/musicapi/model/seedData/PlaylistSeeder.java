@@ -38,7 +38,7 @@ public class PlaylistSeeder {
         if(user != null){
             // Tạo các đối tượng Playlist
             Playlist playlist1 = new Playlist("playlist1", user);
-            Playlist playlist2 = new Playlist("playlist1", user);
+            Playlist playlist2 = new Playlist("playlist2", user);
             Playlist playlist3 = new Playlist("playlist3", user);
             playlists.add(playlist1);
             playlists.add(playlist2);

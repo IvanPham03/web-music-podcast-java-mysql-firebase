@@ -30,4 +30,9 @@ public class UserPlaylist {
     @ManyToOne
     @JoinColumn(name = "playlist_id")
     private Playlist playlist;
+
+    public UserPlaylist(Playlist playlist, User user) {
+        this.playlist = playlist;
+        this.user = user;
+    }
 }

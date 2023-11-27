@@ -1,4 +1,7 @@
 package com.ivanpham.musicapi.repository;
 
-public interface AlbumTrackRepository {
+import com.ivanpham.musicapi.model.AlbumTrack;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface AlbumTrackRepository extends JpaRepository<AlbumTrack, String> {
 }

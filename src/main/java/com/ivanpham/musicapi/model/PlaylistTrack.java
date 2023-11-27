@@ -30,5 +30,8 @@ public class PlaylistTrack {
     @JoinColumn(name = "track_id")
     private Track track;
 
-
+    public PlaylistTrack(Playlist playlist, Track track){
+        this.playlist = playlist;
+        this.track = track;
+    }
 }

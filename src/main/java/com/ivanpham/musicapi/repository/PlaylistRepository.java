@@ -4,5 +4,5 @@ import com.ivanpham.musicapi.model.Playlist;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PlaylistRepository extends JpaRepository<Playlist, String> {
-//    Playlist findById(String ID);
+    Playlist findByplaylistName(String name);
 }
