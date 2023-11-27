@@ -1,13 +1,10 @@
 package com.ivanpham.musicapi.controller;
-import com.ivanpham.musicapi.repository.UserRepository;
 import com.ivanpham.musicapi.model.User;
 import com.ivanpham.musicapi.repository.UserRepository2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 import java.util.Optional;
@@ -37,13 +34,13 @@ public class UserController {
     // tạo người dùng mới
     @PostMapping("/add")
     public ResponseEntity<?> createUser(@RequestBody User newUser) {
-        System.out.println(newUser.toString());
+//        System.out.println(newUser.toString());
 
         try {
-            // Kiểm tra xem người dùng đã tồn tại hay chưa
-//            if (userRepository.findAllById(newUser.getUsername())) {
-//                return ResponseEntity.badRequest().body("Username is already taken!");
-//            }
+            // Kiểm tra xem tên người dùng đã tồn tại hay chưa
+            if (userRepository.findByUsername(newUser.getUsername()) != null) {
+                return ResponseEntity.badRequest().body("Username is already taken!");
+            }
 
             // Lưu người dùng mới vào cơ sở dữ liệu
             userRepository.save(newUser);
