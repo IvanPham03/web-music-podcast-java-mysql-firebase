@@ -46,7 +46,7 @@ public class UserController {
             userRepository.save(newUser);
             return ResponseEntity.ok("User created successfully!");
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("Method createUser has error");
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
