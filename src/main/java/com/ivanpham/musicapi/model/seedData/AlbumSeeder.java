@@ -36,10 +36,10 @@ public class AlbumSeeder {
         User user = userRepository2.findByEmail("admin1@gmail.com");
         if(user != null){
             // Tạo các đối tượng album
-            Album album1 = new Album("album1", "pop", user);
-            Album album2 = new Album("album2", "ballad", user);
-            Album album3 = new Album("album3", "hiphop", user);
-            Album album4 = new Album("album4", "jazz", user);
+            Album album1 = new Album("album1", "pop", user, "public");
+            Album album2 = new Album("album2", "ballad", user, "public");
+            Album album3 = new Album("album3", "hiphop", user, "public");
+            Album album4 = new Album("album4", "jazz", user, "privacy");
             albums.add(album1);
             albums.add(album2);
             albums.add(album3);

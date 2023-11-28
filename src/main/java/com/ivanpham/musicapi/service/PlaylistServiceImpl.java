@@ -1,33 +1,54 @@
 package com.ivanpham.musicapi.service;
 
+import com.ivanpham.musicapi.model.Album;
 import com.ivanpham.musicapi.model.Playlist;
+import com.ivanpham.musicapi.model.User;
 import com.ivanpham.musicapi.repository.AlbumRepository;
 import com.ivanpham.musicapi.repository.PlaylistRepository;
+import com.ivanpham.musicapi.repository.UserRepository2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
+
 @Component
 public class PlaylistServiceImpl implements PlaylistService{
-//    @Autowired
-//    private PlaylistRepository playlistRepository;
-//    @Override
-//    public List<Playlist> getAllPlaylists() {
-//        return playlistRepository.findAll();
-//    }
-//
-//    @Override
-//    public void createPlaylist(Playlist playlist) {
-//        playlistRepository.save(playlist);
-//    }
-//
-//    @Override
-//    public Playlist getPlaylistById(int id) {
-//        return null;
-//    }
-//
-//    @Override
-//    public void deleteById(long id) {
-//        playlistRepository.deleteById(id);
-//    }
+    @Autowired
+    private PlaylistRepository playlistRepository;
+
+    @Autowired
+    UserRepository2 userRepository2; // Để sử dụng hàm check có phải Admin không trong UserRepository2
+    @Override
+    public List<Playlist> getPublicPlaylists() {
+        return playlistRepository.findPublicPlaylists();
+    }
+
+    @Override
+    public boolean isOwner(String playlistId, String userId) {
+        return playlistRepository.isOwner(playlistId, userId);
+    }
+    @Override
+    public Playlist createPlaylist(Playlist playlist, String userId) {
+        User user = userRepository2.findById(userId).orElse(null);
+        playlist.setUser(user);
+        return playlistRepository.save(playlist);
+    }
+
+    @Override
+    public void deleteById(String playlistId) {
+        playlistRepository.deleteById(playlistId);
+    }
+
+    @Override
+    public Optional<Playlist> findAlbumById(String playlistId) {
+        return playlistRepository.findById(playlistId);
+    }
+
+    @Override
+    public List<Playlist> searchByPlaylistName(String keyword) {
+        return playlistRepository.searchByPlaylistName(keyword);
+    }
 }

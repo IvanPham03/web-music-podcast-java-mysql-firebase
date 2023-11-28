@@ -30,6 +30,8 @@ public class Album {
     private String createAt; // Sử dụng kiểu Timestamp
     @Column(name = "updateOn")
     private String updateOn;
+    @Column(name = "policy")
+    private String albumPolicy;
     @OneToMany(mappedBy = "album")
     private List<AlbumTrack> albumTracks = new ArrayList<>();
     @ManyToOne
@@ -40,13 +42,15 @@ public class Album {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
         this.createAt = timeStamp;
         this.updateOn = timeStamp;
+        this.albumPolicy = "public";
     }
 
     //
-    public Album(String albumName, String albumGenre, User user ){
+    public Album(String albumName, String albumGenre, User user, String albumPolicy){
         this.albumGenre = albumGenre;
         this.albumName = albumName;
         this.user = user;
+        this.albumPolicy = albumPolicy;
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
         this.createAt = timeStamp;
         this.updateOn = timeStamp;
