@@ -1,10 +1,9 @@
 package com.ivanpham.musicapi.model.seedData;
 
 import com.ivanpham.musicapi.model.Album;
-import com.ivanpham.musicapi.model.Track;
 import com.ivanpham.musicapi.model.User;
 import com.ivanpham.musicapi.repository.AlbumRepository;
-import com.ivanpham.musicapi.repository.UserRepository2;
+import com.ivanpham.musicapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,10 +12,10 @@ import java.util.List;
 @Component
 public class AlbumSeeder {
     private final AlbumRepository albumRepository;
-    private final UserRepository2 userRepository2;
+    private final UserRepository userRepository2;
 
     @Autowired
-    public AlbumSeeder(AlbumRepository albumRepository, UserRepository2 userRepository2) {
+    public AlbumSeeder(AlbumRepository albumRepository, UserRepository userRepository2) {
         this.albumRepository = albumRepository;
         this.userRepository2 = userRepository2;
     }

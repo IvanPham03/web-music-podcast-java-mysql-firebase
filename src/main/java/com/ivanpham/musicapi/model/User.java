@@ -44,8 +44,12 @@ public class User {
     private String createAt; // Sử dụng kiểu Timestamp
     @Column(name = "updateOn")
     private String updateOn;
-    @Column(name = "role")
-    private String role;
+    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @JoinTable(
+            name="users_roles",
+            joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="ID")},
+            inverseJoinColumns={@JoinColumn(name="ROLE_ID", referencedColumnName="ID")})
+    private List<Role> roles = new ArrayList<>();
 
 
     public User() {
@@ -53,7 +57,7 @@ public class User {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
         this.createAt = timeStamp;
         this.updateOn = timeStamp;
-        this.role = "user";
+        this.roles = null;
     }
 
 
@@ -74,13 +78,13 @@ public class User {
     // 1 nhieu play list
     @OneToMany(mappedBy = "user")
     private List<Playlist> playlists = new ArrayList<>();
-    public User(String email, String username, String password, String role) {
+    public User(String email, String username, String password, List<Role> roles) {
         this.email = email;
         this.username = username;
         this.password = password;
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
         this.createAt = timeStamp;
         this.updateOn = timeStamp;
-        this.role = role;
+        this.roles = roles;
     }
 }
