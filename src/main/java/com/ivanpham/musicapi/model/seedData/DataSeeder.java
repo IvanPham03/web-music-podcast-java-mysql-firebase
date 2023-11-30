@@ -16,7 +16,8 @@ public class DataSeeder implements CommandLineRunner {
     private final AlbumTrackSeeder albumTrackSeeder;
     private final PlaylistTrackSeeder playlistTrackSeeder;
     private final UserPlaylistSeeder userPlaylistSeeder;
-    public DataSeeder( TrackSeeder trackSeeder, UserSeeder userSeeder, UserTrackSeeder userTrackSeeder, AlbumSeeder albumSeeder, PlaylistSeeder playlistSeeder, ArtistTrackSeeder artistTrackSeeder, AlbumTrackSeeder albumTrackSeeder, PlaylistTrackSeeder playlistTrackSeeder, UserPlaylistSeeder userPlaylistSeeder) {
+    private final RoleSeeder roleSeeder;
+    public DataSeeder( TrackSeeder trackSeeder, UserSeeder userSeeder, UserTrackSeeder userTrackSeeder, AlbumSeeder albumSeeder, PlaylistSeeder playlistSeeder, ArtistTrackSeeder artistTrackSeeder, AlbumTrackSeeder albumTrackSeeder, PlaylistTrackSeeder playlistTrackSeeder, UserPlaylistSeeder userPlaylistSeeder, RoleSeeder roleSeeder) {
         this.userSeeder = userSeeder;
         this.trackSeeder = trackSeeder;
         this.userTrackSeeder = userTrackSeeder;
@@ -26,6 +27,7 @@ public class DataSeeder implements CommandLineRunner {
         this.albumTrackSeeder = albumTrackSeeder;
         this.playlistTrackSeeder = playlistTrackSeeder;
         this.userPlaylistSeeder = userPlaylistSeeder;
+        this.roleSeeder = roleSeeder;
     }
 
     @Override
@@ -39,5 +41,6 @@ public class DataSeeder implements CommandLineRunner {
         albumTrackSeeder.seedAlbumTracks();
         playlistTrackSeeder.seedPlaylistTracks();
         userPlaylistSeeder.seedUserPlaylists();
+        roleSeeder.seedRole();
     }
 }

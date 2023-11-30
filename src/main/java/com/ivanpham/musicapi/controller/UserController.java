@@ -1,24 +1,37 @@
 package com.ivanpham.musicapi.controller;
 import com.ivanpham.musicapi.model.User;
-import com.ivanpham.musicapi.repository.UserRepository2;
+import com.ivanpham.musicapi.repository.RoleRepository;
+import com.ivanpham.musicapi.repository.UserRepository;
+import com.ivanpham.musicapi.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
+
 import java.util.List;
 import java.util.Optional;
 
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/auth")
-public class UserController {
+@RequestMapping("/api/Authenticate")
+public class UserController  {
 // injection của một interface UserRepository sử dụng @Autowired.
 // UserRepository là một interface dùng để truy cập và tương tác
 // với cơ sở dữ liệu để thực hiện các thao tác CRUD (Create, Read, Update, Delete) cho đối tượng User.
     @Autowired
-    private UserRepository2 userRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private AuthService authService;
     // lấy tất cả
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers() {
@@ -32,24 +45,11 @@ public class UserController {
         return userOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
     // tạo người dùng mới
-    @PostMapping("/add")
+    @PostMapping("register")
     public ResponseEntity<?> createUser(@RequestBody User newUser) {
 //        System.out.println(newUser.toString());
-
-        try {
-            // Kiểm tra xem tên người dùng đã tồn tại hay chưa
-            if (userRepository.findByUsername(newUser.getUsername()) != null) {
-                return ResponseEntity.badRequest().body("Username is already taken!");
-            }
-
-            // Lưu người dùng mới vào cơ sở dữ liệu
-            userRepository.save(newUser);
-            return ResponseEntity.ok("User created successfully!");
-        } catch (Exception e) {
-            System.out.println("Method createUser has error");
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        authService.createUser(newUser);
+        return new ResponseEntity<>("User registered success!", HttpStatus.OK);
     }
 
     //update
@@ -81,6 +81,14 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+    @PostMapping("login")
+    public ResponseEntity<?> login(@RequestBody User user) {
+
+        String token = authService.login(user);
+
+        return new ResponseEntity<>("User login success", HttpStatus.OK);
+    }
+
 
 
 }

@@ -3,7 +3,7 @@ package com.ivanpham.musicapi.model.seedData;
 import com.ivanpham.musicapi.model.Track;
 import com.ivanpham.musicapi.model.User;
 import com.ivanpham.musicapi.repository.TrackRepository;
-import com.ivanpham.musicapi.repository.UserRepository2;
+import com.ivanpham.musicapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,10 +14,10 @@ import java.util.List;
 public class TrackSeeder {
 
     private final TrackRepository trackRepository;
-    private final UserRepository2 userRepository2;
+    private final UserRepository userRepository2;
 
     @Autowired
-    public TrackSeeder(TrackRepository trackRepository, UserRepository2 userRepository2) {
+    public TrackSeeder(TrackRepository trackRepository, UserRepository userRepository2) {
         this.trackRepository = trackRepository;
         this.userRepository2 = userRepository2;
     }

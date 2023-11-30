@@ -2,9 +2,8 @@ package com.ivanpham.musicapi;
 
 import com.ivanpham.musicapi.model.State;
 import com.ivanpham.musicapi.model.User;
-import com.ivanpham.musicapi.repository.UserRepository;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+
 import static org.assertj.core.api.Assertions.*;
 //@SpringBootTest
 public class TestUserRepo {

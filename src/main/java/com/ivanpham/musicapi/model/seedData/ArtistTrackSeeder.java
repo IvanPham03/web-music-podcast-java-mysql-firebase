@@ -5,7 +5,7 @@ import com.ivanpham.musicapi.model.Track;
 import com.ivanpham.musicapi.model.User;
 import com.ivanpham.musicapi.repository.ArtistTrackRepository;
 import com.ivanpham.musicapi.repository.TrackRepository;
-import com.ivanpham.musicapi.repository.UserRepository2;
+import com.ivanpham.musicapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 @Component
 public class ArtistTrackSeeder {
-    private final UserRepository2 userRepository;
+    private final UserRepository userRepository;
     private final ArtistTrackRepository artistTrackRepository;
     private final TrackRepository trackRepository;
 
     @Autowired
-    public ArtistTrackSeeder(UserRepository2 userRepository, ArtistTrackRepository artistTrackRepository, TrackRepository trackRepository) {
+    public ArtistTrackSeeder(UserRepository userRepository, ArtistTrackRepository artistTrackRepository, TrackRepository trackRepository) {
         this.userRepository = userRepository;
         this.artistTrackRepository = artistTrackRepository;
         this.trackRepository = trackRepository;

@@ -11,10 +11,10 @@ import java.util.List;
 public class UserPlaylistSeeder {
     private final PlaylistRepository playlistRepository;
     private final UserPlaylistRepository userPlaylistRepository;
-    private final UserRepository2 userRepository2;
+    private final UserRepository userRepository2;
 
     @Autowired
-    public UserPlaylistSeeder(PlaylistRepository playlistRepository, UserPlaylistRepository userPlaylistRepository, UserRepository2 userRepository2) {
+    public UserPlaylistSeeder(PlaylistRepository playlistRepository, UserPlaylistRepository userPlaylistRepository, UserRepository userRepository2) {
         this.playlistRepository = playlistRepository;
         this.userPlaylistRepository = userPlaylistRepository;
         this.userRepository2 = userRepository2;
