@@ -45,6 +45,7 @@ public class User {
     @Column(name = "updateOn")
     private String updateOn;
     @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @Column(name="role")
     @JoinTable(
             name="users_roles",
             joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="ID")},
@@ -57,7 +58,7 @@ public class User {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
         this.createAt = timeStamp;
         this.updateOn = timeStamp;
-        this.roles = null;
+
     }
 
 

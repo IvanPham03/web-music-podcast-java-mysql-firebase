@@ -6,6 +6,7 @@ import com.ivanpham.musicapi.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ public class UserController  {
 
     @Autowired
     private AuthService authService;
+
     // lấy tất cả
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers() {
@@ -85,10 +87,6 @@ public class UserController  {
     public ResponseEntity<?> login(@RequestBody User user) {
 
         String token = authService.login(user);
-
         return new ResponseEntity<>("User login success", HttpStatus.OK);
     }
-
-
-
 }

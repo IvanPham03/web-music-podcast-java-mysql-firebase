@@ -53,7 +53,9 @@ public class SpringConfig {
                 .csrf((csrf) -> csrf.disable())
                 .authorizeHttpRequests((authorize) -> {
                     authorize.requestMatchers("/").authenticated();
+                    authorize.requestMatchers("/admin/**").hasRole("ADMIN");
                     authorize.anyRequest().permitAll();
+
                 })
                 .logout(
                         logout -> logout

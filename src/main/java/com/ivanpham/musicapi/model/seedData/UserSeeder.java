@@ -37,48 +37,48 @@ public class UserSeeder {
 
     private List<User> createUsers() {
         List<User> users = new ArrayList<>();
-        Role role_admin = roleRepository.findByName("ROLE_ADMIN");
+        Role role_admin = roleRepository.findByName("ADMIN");
         if(role_admin == null){
             role_admin = checkRoleAdminExist();
         }
-        Role role_user = roleRepository.findByName("ROLE_USER");
+        Role role_user = roleRepository.findByName("USER");
         if(role_user == null){
             role_user = checkRoleUserExist();
         }
-        Role role_artist = roleRepository.findByName("ROLE_ARTIST");
+        Role role_artist = roleRepository.findByName("ARTIST");
         if(role_artist == null){
             role_artist = checkRoleArtistExist();
         }
         // Tạo các đối tượng user
-        User admin1 = new User("admin1@gmail.com", "admin1", passwordEncoder.encode("admin1"), Arrays.asList(role_admin));
-        User admin2 = new User("admin2@gmail.com", "admin2", passwordEncoder.encode("admin2"), Arrays.asList(role_admin));
-        User artist1 = new User("artist1@gmail.com", "artist1", passwordEncoder.encode("artist1"), Arrays.asList(role_artist));
-        User artist2 = new User("artist2@gmail.com", "artist2", passwordEncoder.encode("artist2"), Arrays.asList(role_artist));
+//        User admin1 = new User("admin1@gmail.com", "admin1", passwordEncoder.encode("admin1"), Arrays.asList(role_admin));
+//        User admin2 = new User("admin2@gmail.com", "admin2", passwordEncoder.encode("admin2"), Arrays.asList(role_admin));
+//        User artist1 = new User("artist1@gmail.com", "artist1", passwordEncoder.encode("artist1"), Arrays.asList(role_artist));
+//        User artist2 = new User("artist2@gmail.com", "artist2", passwordEncoder.encode("artist2"), Arrays.asList(role_artist));
         User user1 = new User("user1@gmail.com", "user1", passwordEncoder.encode("user1"), Arrays.asList(role_user));
-        User user2 = new User("user2@gmail.com", "user2", passwordEncoder.encode("user2"),Arrays.asList(role_user));
+//        User user2 = new User("user2@gmail.com", "user2", passwordEncoder.encode("user2"),Arrays.asList(role_user));
 
         users.add(user1);
-        users.add(user2);
-        users.add(admin1);
-        users.add(admin2);
-        users.add(artist1);
-        users.add(artist2);
+//        users.add(user2);
+//        users.add(admin1);
+//        users.add(admin2);
+//        users.add(artist1);
+//        users.add(artist2);
 
         return users;
     }
     private Role checkRoleAdminExist() {
         Role role = new Role();
-        role.setName("ROLE_ADMIN");
+        role.setName("ADMIN");
         return roleRepository.save(role);
     }
     private Role checkRoleUserExist() {
         Role role = new Role();
-        role.setName("ROLE_USER");
+        role.setName("USER");
         return roleRepository.save(role);
     }
     private Role checkRoleArtistExist() {
         Role role = new Role();
-        role.setName("ROLE_ARTIST");
+        role.setName("ARTIST");
         return roleRepository.save(role);
     }
 }
