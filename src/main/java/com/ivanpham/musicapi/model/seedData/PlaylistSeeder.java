@@ -35,9 +35,9 @@ public class PlaylistSeeder {
         User user = userRepository2.findByEmail("admin1@gmail.com");
         if(user != null){
             // Tạo các đối tượng Playlist
-            Playlist playlist1 = new Playlist("playlist1", user);
-            Playlist playlist2 = new Playlist("playlist2", user);
-            Playlist playlist3 = new Playlist("playlist3", user);
+            Playlist playlist1 = new Playlist("playlist1", user , "public");
+            Playlist playlist2 = new Playlist("playlist2", user , "public");
+            Playlist playlist3 = new Playlist("playlist3", user, "privacy");
             playlists.add(playlist1);
             playlists.add(playlist2);
             playlists.add(playlist3);
