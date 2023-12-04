@@ -50,19 +50,19 @@ public class UserSeeder {
             role_artist = checkRoleArtistExist();
         }
         // Tạo các đối tượng user
-//        User admin1 = new User("admin1@gmail.com", "admin1", passwordEncoder.encode("admin1"), Arrays.asList(role_admin));
-//        User admin2 = new User("admin2@gmail.com", "admin2", passwordEncoder.encode("admin2"), Arrays.asList(role_admin));
-//        User artist1 = new User("artist1@gmail.com", "artist1", passwordEncoder.encode("artist1"), Arrays.asList(role_artist));
-//        User artist2 = new User("artist2@gmail.com", "artist2", passwordEncoder.encode("artist2"), Arrays.asList(role_artist));
+        User admin1 = new User("admin1@gmail.com", "admin1", passwordEncoder.encode("admin1"), Arrays.asList(role_admin));
+        User admin2 = new User("admin2@gmail.com", "admin2", passwordEncoder.encode("admin2"), Arrays.asList(role_admin));
+        User artist1 = new User("artist1@gmail.com", "artist1", passwordEncoder.encode("artist1"), Arrays.asList(role_artist));
+        User artist2 = new User("artist2@gmail.com", "artist2", passwordEncoder.encode("artist2"), Arrays.asList(role_artist));
         User user1 = new User("user1@gmail.com", "user1", passwordEncoder.encode("user1"), Arrays.asList(role_user));
-//        User user2 = new User("user2@gmail.com", "user2", passwordEncoder.encode("user2"),Arrays.asList(role_user));
+        User user2 = new User("user2@gmail.com", "user2", passwordEncoder.encode("user2"),Arrays.asList(role_user));
 
         users.add(user1);
-//        users.add(user2);
-//        users.add(admin1);
-//        users.add(admin2);
-//        users.add(artist1);
-//        users.add(artist2);
+        users.add(user2);
+        users.add(admin1);
+        users.add(admin2);
+        users.add(artist1);
+        users.add(artist2);
 
         return users;
     }
