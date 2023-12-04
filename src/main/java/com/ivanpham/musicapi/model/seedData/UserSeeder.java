@@ -58,6 +58,7 @@ public class UserSeeder {
         User user2 = new User("user2@gmail.com", "user2", passwordEncoder.encode("user2"),Arrays.asList(role_user));
 
         users.add(user1);
+        users.add(admin1);
         users.add(user2);
         users.add(admin1);
         users.add(admin2);

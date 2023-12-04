@@ -32,6 +32,8 @@ public class Playlist {
     private String createAt; // Sử dụng kiểu Timestamp
     @Column(name = "updateOn")
     private String updateOn;
+    @Column(name = "policy")
+    private String playlistPolicy;
 
     @OneToMany(mappedBy = "playlist")
     private List<UserPlaylist> userPlaylists = new ArrayList<>();
@@ -45,13 +47,15 @@ public class Playlist {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
         this.createAt = timeStamp;
         this.updateOn = timeStamp;
+        this.playlistPolicy = "public";
     }
 
-    public Playlist(String playlistName, User user){
+    public Playlist(String playlistName, User user, String playlistPolicy){
         this.playlistName = playlistName;
         this.user = user;
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
         this.createAt = timeStamp;
         this.updateOn = timeStamp;
+        this.playlistPolicy = playlistPolicy;
     }
 }

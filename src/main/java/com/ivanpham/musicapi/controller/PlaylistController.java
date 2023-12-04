@@ -1,7 +1,9 @@
 package com.ivanpham.musicapi.controller;
 
+import com.ivanpham.musicapi.model.Album;
 import com.ivanpham.musicapi.model.Playlist;
 import com.ivanpham.musicapi.repository.PlaylistRepository;
+import com.ivanpham.musicapi.repository.UserRepository;
 import com.ivanpham.musicapi.service.PlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,65 +17,122 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/Playlist")
 public class PlaylistController {
-//    @Autowired
-//    private PlaylistService playlistService;
-//    @Autowired
-//    private PlaylistRepository playlistRepository;
-//
-//    @GetMapping("")
-//    public List<Playlist> getAllAlbums(){
-//        return playlistService.getAllPlaylists();
-//    }
-//    /*@GetMapping("/{id}")
-//    public Optional<Playlist> getAlbumById(@PathVariable String id) {
-//        try {
-//            // Sử dụng findById để lấy đối tượng theo ID
-//            Optional<Playlist> optionalTrack = playlistRepository.findById(id);
-//
-//            // Kiểm tra xem đối tượng có tồn tại hay không
-//            if (optionalTrack.isPresent()) {
-//                // Nếu tồn tại, trả về đối tượng Track
-//                return optionalTrack;
-//            } else {
-//                // Nếu không tồn tại, trả về HTTP 404 Not Found
-//                return null;
-//            }
-//        } catch (Exception e) {
-//            // Xử lý ngoại lệ và trả về HTTP 500 Internal Server Error
-//            return null;
-//        }
-//    }
-//*/
-//    @PostMapping("/create")
-//    public Playlist createNewAlbum(@RequestBody Playlist playlist){
-//        playlistService.createPlaylist(playlist);
-//        return playlist;
-//    }
-//
-//    @DeleteMapping("/delete/{id}")
-//    public void deleteAlbumById(@PathVariable String id) {
-//        playlistService.deleteById(id);
-//    }
+    @Autowired
+    private PlaylistService playlistService;
 
-//    @PutMapping("/edit/{id}")
-//    public ResponseEntity<Playlist> updateAlbum(@PathVariable Long id,@RequestBody Playlist playlistData){
-//        Optional<Playlist> optionalAlbum = playlistRepository.findById(id);
-//        if(optionalAlbum.isPresent()){
-//            Playlist upPlaylist = optionalAlbum.get();
-//            if(upPlaylist.getPlaylistOwnerId() != null)
-//                upPlaylist.setPlaylistOwnerId(playlistData.getPlaylistOwnerId());
-//            if(upPlaylist.getPlaylistName() != null)
-//                upPlaylist.setPlaylistName(playlistData.getPlaylistName());
-//            if(upPlaylist.getPlaylistDescription() != null)
-//                upPlaylist.setPlaylistDescription(playlistData.getPlaylistDescription());
-//            if(upPlaylist.getImgPlaylist() != null)
-//                upPlaylist.setImgPlaylist(playlistData.getImgPlaylist());
-//            if(upPlaylist.getTimestamp() != null)
-//                upPlaylist.setTimestamp(playlistData.getTimestamp());
-//            playlistRepository.save(upPlaylist);
-//            return ResponseEntity.ok(upPlaylist);
-//        }
-//        else
-//            return ResponseEntity.notFound().build();
-//    }
+    @Autowired
+    private PlaylistRepository playlistRepository;
+
+    @Autowired
+    private UserRepository userRepository2; // Để sử dụng hàm check có phải Admin không trong UserRepository2
+
+    // Trả về danh sách các Playlist có policy là public
+    @GetMapping("/getAll/{userId}")
+    public List<Playlist> getPublicPlaylists(@PathVariable String userId) {
+        if(userRepository2.existsByIdAndRoleAdmin(userId)) {
+            //Admin thì trả hết
+            return playlistRepository.findAll();
+        }
+        // không phải Admin thì trả về Playlist public
+        return playlistService.getPublicPlaylists();
+    }
+
+    // THÊM
+    @PostMapping("/create/{userId}")
+    public ResponseEntity<Playlist> createNewPlaylist(@RequestBody Playlist playlist, @PathVariable String userId){
+        // tạo một Playlist mới đính kèm theo userId của người tạo ra Playlist đó
+        try {
+            Playlist savePlaylist = playlistService.createPlaylist(playlist,userId); // xem hàm này trong AlbumServiceImpl
+            return ResponseEntity.status(HttpStatus.CREATED).body(savePlaylist);
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // UPDATE
+    @PutMapping("/update/{playlistId}/by/{userId}")
+    public ResponseEntity<Playlist> updatePlaylist(@PathVariable String playlistId, @PathVariable String userId, @RequestBody Playlist playlist) {
+        Optional<Playlist> optionalPlaylist = playlistRepository.findById(playlistId);
+        if(optionalPlaylist.isPresent()) {
+            // Kiểm tra xem userId này có phải là admin không?
+            // - True : thì được update
+            if (userRepository2.existsByIdAndRoleAdmin(userId)) {
+                playlist.setId(playlistId);
+                playlist.setUser(optionalPlaylist.get().getUser());
+                Playlist savePlaylist = playlistRepository.save(playlist);
+                return ResponseEntity.ok(savePlaylist);
+            }
+            // Kiểm tra xem userId này có phải là người sở hữu không?
+            // - True : thì được update
+            if(playlistService.isOwner(playlistId, userId)) {
+                playlist.setId(playlistId);
+                playlist.setUser(optionalPlaylist.get().getUser());
+                Playlist savePlaylist = playlistRepository.save(playlist);
+                return ResponseEntity.ok(savePlaylist);
+            }
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // XÓA
+    @DeleteMapping("/{playlistId}/deleteBy/{userId}")
+    public ResponseEntity<Void> deleteAlbumById(@PathVariable String playlistId, @PathVariable String userId) {
+        // Kiểm tra Album id này có tồn tại
+        if(playlistRepository.existsById(playlistId)) {
+            // User là Admin thì xóa
+            if (userRepository2.existsByIdAndRoleAdmin(userId)) // Xem hàm này trong UserRepository2
+                playlistService.deleteById(playlistId);
+            // User là chủ sở hữu thì xóa
+            if (playlistService.isOwner(playlistId, userId)) // Xem hàm trong PlaylistRepository
+                playlistService.deleteById(playlistId);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+    //Tìm theo ID
+    @GetMapping("/{userId}/getPlaylistById/{playlistId}")
+    public ResponseEntity<Playlist> getPlaylistById(@PathVariable String userId,@PathVariable String playlistId) {
+        try {
+            if(userRepository2.existsByIdAndRoleAdmin(userId)) {
+                // Admin thì trả về cả Playlist private
+                // Kiểm tra xem đối tượng có tồn tại hay không
+                // Nếu tồn tại, trả về đối tượng Playlist
+                Optional<Playlist> optionalPlaylist = playlistService.findPlaylistByIdAdmin(playlistId);
+                return optionalPlaylist.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+            }
+            else{
+                // Không phải Admin thì trả về Playlist public
+                // Kiểm tra xem đối tượng có tồn tại hay không
+                // Nếu tồn tại, trả về đối tượng Playlist (Nếu Id là Playlist private thì sẽ không tìm thấy)
+                Optional<Playlist> optionalPlaylist = playlistService.findPlaylistById(playlistId);
+                return optionalPlaylist.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+            }
+            // Nếu không tồn tại, trả về HTTP 404 Not Found
+        } catch (Exception e) {
+            // Xử lý ngoại lệ và trả về HTTP 500 Internal Server Error
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    //SEARCH
+    @GetMapping("/{userId}/search")
+    public List<Playlist> searchPlaylistByName(@PathVariable String userId,@RequestParam String keyword) {
+        //Nếu Keyword rỗng thì trả các playlist public đối với không phải admin
+        // Admin thì tìm Playlist có tên trừng với keyword kể cả có là private
+        if (keyword != null) {
+            if(userRepository2.existsByIdAndRoleAdmin(userId)) {
+                return playlistService.searchByPlaylistNameAdmin(keyword);
+            }
+            else{
+                return playlistService.searchByPlaylistName(keyword);
+            }
+        }
+        else{
+            if(userRepository2.existsByIdAndRoleAdmin(userId)){
+                return playlistRepository.findAll();
+            }
+            return playlistService.getPublicPlaylists();
+        }
+    }
 }
