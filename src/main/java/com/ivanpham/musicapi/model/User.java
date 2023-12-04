@@ -1,9 +1,6 @@
 package com.ivanpham.musicapi.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,7 +21,9 @@ import java.util.*;
         property = "id")
 public class User {
     @Id
+    @JsonView(View.BasicUser.class)
     private String id = UUID.randomUUID().toString();
+    @JsonView(View.BasicTrack.class)
     @Column(name = "username")
     @NonNull
     private String username;

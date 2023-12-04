@@ -1,6 +1,7 @@
 package com.ivanpham.musicapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,7 +20,9 @@ import java.util.*;
         property = "id")
 public class Track {
     @Id
+    @JsonView(View.BasicTrack.class)
     private String id = UUID.randomUUID().toString();
+    @JsonView(View.BasicTrack.class)
     @Column(name = "TrackName")
     private String trackName;
     @Column(name = "description")
@@ -33,6 +36,7 @@ public class Track {
     private String updateOn;
     @Column(name = "genre")
     private String genre;
+    @JsonView(View.BasicTrack.class)
     @OneToMany(mappedBy = "track")
     private List<UserTrack> userTracks = new ArrayList<>();
 
@@ -40,6 +44,7 @@ public class Track {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
 
     @OneToMany(mappedBy = "track")
     private List<AlbumTrack> albumTracks = new ArrayList<>();

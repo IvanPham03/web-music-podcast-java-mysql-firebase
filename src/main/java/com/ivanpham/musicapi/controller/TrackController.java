@@ -1,6 +1,8 @@
 package com.ivanpham.musicapi.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.ivanpham.musicapi.model.Track;
+import com.ivanpham.musicapi.model.View;
 import com.ivanpham.musicapi.repository.TrackRepository;
 import com.ivanpham.musicapi.service.TrackService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +30,14 @@ public class TrackController {
     private TrackService trackService;
 
     @GetMapping
+    @JsonView(View.BasicTrack.class)
     public ResponseEntity<List<Track>> getTracks() {
         List<Track> tracks = trackRepository.findAll();
         return ResponseEntity.ok(tracks);
     }
 
     @GetMapping("/{id}")
+
     public ResponseEntity<Track> getTrackById(@PathVariable String id) {
         Optional<Track> optionalTrack = trackRepository.findById(id);
         return optionalTrack.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
