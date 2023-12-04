@@ -1,6 +1,7 @@
 package com.ivanpham.musicapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ public class AlbumTrack {
     private Album album;
 
     @ManyToOne
+    @JsonView(View.BasicAlbum.class)
     @JoinColumn(name = "track_id")
     private Track track;
 
