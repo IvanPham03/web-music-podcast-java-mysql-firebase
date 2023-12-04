@@ -64,7 +64,6 @@ public class UserSeeder {
         users.add(admin2);
         users.add(artist1);
         users.add(artist2);
-
         return users;
     }
     private Role checkRoleAdminExist() {

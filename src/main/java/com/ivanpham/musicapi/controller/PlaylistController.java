@@ -3,6 +3,7 @@ package com.ivanpham.musicapi.controller;
 import com.ivanpham.musicapi.model.Album;
 import com.ivanpham.musicapi.model.Playlist;
 import com.ivanpham.musicapi.repository.PlaylistRepository;
+import com.ivanpham.musicapi.repository.UserPlaylistRepository;
 import com.ivanpham.musicapi.repository.UserRepository;
 import com.ivanpham.musicapi.service.PlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/Playlist")
@@ -26,6 +25,9 @@ public class PlaylistController {
     @Autowired
     private UserRepository userRepository2; // Để sử dụng hàm check có phải Admin không trong UserRepository2
 
+    @Autowired
+    private UserPlaylistRepository userPlaylistRepository;
+  
     // Trả về danh sách các Playlist có policy là public
     @GetMapping("/getAll/{userId}")
     public List<Playlist> getPublicPlaylists(@PathVariable String userId) {
@@ -37,6 +39,19 @@ public class PlaylistController {
         return playlistService.getPublicPlaylists();
     }
 
+    // Trả về PlayList của người dùng (Tạo hoặc Follow)
+    @GetMapping("/getAllPlaylistByUserId/{userId}")
+    public List<Playlist> getAllUserPlaylists(@PathVariable String userId){
+
+        List<Playlist> list1 = userPlaylistRepository.findPlaylistsByUserId(userId);
+        Set<Playlist> uniquePlaylists = new HashSet<>(list1);
+
+        List<Playlist> list2 = playlistService.returnOwnerPlaylist(userId);
+        uniquePlaylists.addAll(list2);
+
+        return new ArrayList<>(uniquePlaylists);
+    }
+  
     // THÊM
     @PostMapping("/create/{userId}")
     public ResponseEntity<Playlist> createNewPlaylist(@RequestBody Playlist playlist, @PathVariable String userId){
