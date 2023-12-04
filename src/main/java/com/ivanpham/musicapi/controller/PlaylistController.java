@@ -27,8 +27,13 @@ public class PlaylistController {
     private UserRepository userRepository2; // Để sử dụng hàm check có phải Admin không trong UserRepository2
 
     // Trả về danh sách các Playlist có policy là public
-    @GetMapping("/public")
-    public List<Playlist> getPublicPlaylists() {
+    @GetMapping("/getAll/{userId}")
+    public List<Playlist> getPublicPlaylists(@PathVariable String userId) {
+        if(userRepository2.existsByIdAndRoleAdmin(userId)) {
+            //Admin thì trả hết
+            return playlistRepository.findAll();
+        }
+        // không phải Admin thì trả về Playlist public
         return playlistService.getPublicPlaylists();
     }
 
@@ -86,15 +91,24 @@ public class PlaylistController {
     }
 
     //Tìm theo ID
-    @GetMapping("/{playlistId}")
-    public ResponseEntity<Playlist> getPlaylistById(@PathVariable String playlistId) {
+    @GetMapping("/{userId}/getPlaylistById/{playlistId}")
+    public ResponseEntity<Playlist> getPlaylistById(@PathVariable String userId,@PathVariable String playlistId) {
         try {
-            // Sử dụng findById để lấy đối tượng theo ID
-            Optional<Playlist> optionalPlaylist = playlistService.findAlbumById(playlistId);
-            // Kiểm tra xem đối tượng có tồn tại hay không
-            // Nếu tồn tại, trả về đối tượng Album
+            if(userRepository2.existsByIdAndRoleAdmin(userId)) {
+                // Admin thì trả về cả Playlist private
+                // Kiểm tra xem đối tượng có tồn tại hay không
+                // Nếu tồn tại, trả về đối tượng Playlist
+                Optional<Playlist> optionalPlaylist = playlistService.findPlaylistByIdAdmin(playlistId);
+                return optionalPlaylist.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+            }
+            else{
+                // Không phải Admin thì trả về Playlist public
+                // Kiểm tra xem đối tượng có tồn tại hay không
+                // Nếu tồn tại, trả về đối tượng Playlist (Nếu Id là Playlist private thì sẽ không tìm thấy)
+                Optional<Playlist> optionalPlaylist = playlistService.findPlaylistById(playlistId);
+                return optionalPlaylist.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+            }
             // Nếu không tồn tại, trả về HTTP 404 Not Found
-            return optionalPlaylist.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
         } catch (Exception e) {
             // Xử lý ngoại lệ và trả về HTTP 500 Internal Server Error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -102,12 +116,22 @@ public class PlaylistController {
     }
 
     //SEARCH
-    @GetMapping("/search")
-    public List<Playlist> searchPlaylistByName(@RequestParam String keyword) {
-        //Nếu Keyword rỗng thì trả các playlist public không thì tìm Playlist có tên trừng với keyword
-        if (keyword != null)
-            return playlistService.searchByPlaylistName(keyword);
+    @GetMapping("/{userId}/search")
+    public List<Playlist> searchPlaylistByName(@PathVariable String userId,@RequestParam String keyword) {
+        //Nếu Keyword rỗng thì trả các playlist public đối với không phải admin
+        // Admin thì tìm Playlist có tên trừng với keyword kể cả có là private
+        if (keyword != null) {
+            if(userRepository2.existsByIdAndRoleAdmin(userId)) {
+                return playlistService.searchByPlaylistNameAdmin(keyword);
+            }
+            else{
+                return playlistService.searchByPlaylistName(keyword);
+            }
+        }
         else{
+            if(userRepository2.existsByIdAndRoleAdmin(userId)){
+                return playlistRepository.findAll();
+            }
             return playlistService.getPublicPlaylists();
         }
     }

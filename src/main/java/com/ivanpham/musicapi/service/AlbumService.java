@@ -24,4 +24,8 @@ public interface AlbumService {
     public Optional<Album> findAlbumById(String albumId);
 
     public List<Album> searchByAlbumName(String keyword);
+
+    public List<Album> searchByAlbumNameAdmin(String keyword);
+
+    public Optional<Album> findAlbumByIdAdmin(String albumId);
 }

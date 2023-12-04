@@ -43,12 +43,22 @@ public class PlaylistServiceImpl implements PlaylistService{
     }
 
     @Override
-    public Optional<Playlist> findAlbumById(String playlistId) {
+    public Optional<Playlist> findPlaylistById(String playlistId) {
         return playlistRepository.findById(playlistId);
+    }
+
+    @Override
+    public Optional<Playlist> findPlaylistByIdAdmin(String playlistId) {
+        return playlistRepository.findByIdAdmin(playlistId);
     }
 
     @Override
     public List<Playlist> searchByPlaylistName(String keyword) {
         return playlistRepository.searchByPlaylistName(keyword);
+    }
+
+    @Override
+    public List<Playlist> searchByPlaylistNameAdmin(String keyword) {
+        return playlistRepository.searchByPlaylistNameAdmin(keyword);
     }
 }

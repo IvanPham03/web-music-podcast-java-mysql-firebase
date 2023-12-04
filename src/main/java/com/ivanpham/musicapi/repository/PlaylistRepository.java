@@ -22,6 +22,12 @@ public interface PlaylistRepository extends JpaRepository<Playlist, String> {
     @Query("SELECT p FROM Playlist p WHERE p.id = :playlistId AND p.playlistPolicy = 'public'")
     Optional<Playlist> findById(@Param("playlistId") String playlistId);
 
+    @Query("SELECT p FROM Playlist p WHERE p.id = :playlistId")
+    Optional<Playlist> findByIdAdmin(@Param("playlistId") String playlistId);
+
     @Query("SELECT p FROM Playlist p WHERE LOWER(p.playlistName) LIKE LOWER(CONCAT('%', :keyword, '%')) AND p.playlistPolicy = 'public'")
     List<Playlist> searchByPlaylistName(@Param("keyword") String keyword);
+
+    @Query("SELECT p FROM Playlist p WHERE LOWER(p.playlistName) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    List<Playlist> searchByPlaylistNameAdmin(@Param("keyword") String keyword);
 }

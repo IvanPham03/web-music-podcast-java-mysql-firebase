@@ -25,9 +25,12 @@ public class AlbumController {
 
     @Autowired
     private UserRepository userRepository2;
-    @GetMapping("/public")
-    public ResponseEntity<List<Album>> getAllPublicAlbums() {
-        // Hàm trả về danh sách các Album có policy = public
+    @GetMapping("/getAll/{userId}")
+    public ResponseEntity<List<Album>> getAllAlbums(@PathVariable String userId) {
+        // Admin thì trả hết kể cả private
+        if(userRepository2.existsByIdAndRoleAdmin(userId)) // hàm kiểm tra có phải admin không
+            return ResponseEntity.ok(albumRepository.findAll());
+        // trả về danh sách các Album có policy = public nếu không phải Admin
         return ResponseEntity.ok(albumService.findAllPublicAlbums());
     }
 
@@ -99,15 +102,24 @@ public class AlbumController {
     }
 
     //Tìm theo ID
-    @GetMapping("/{albumId}")
-    public ResponseEntity<Album> getAlbumById(@PathVariable String albumId) {
+    @GetMapping("/{userId}/getAlbumById/{albumId}")
+    public ResponseEntity<Album> getAlbumById(@PathVariable String userId,@PathVariable String albumId) {
         try {
-            // Sử dụng findById để lấy đối tượng theo ID
-            Optional<Album> optionalAlbum = albumService.findAlbumById(albumId);
-            // Kiểm tra xem đối tượng có tồn tại hay không
-            // Nếu tồn tại, trả về đối tượng Album
+            if(userRepository2.existsByIdAndRoleAdmin(userId)) {
+                // Admin thì trả về cả Album private
+                // Kiểm tra xem đối tượng có tồn tại hay không
+                // Nếu tồn tại, trả về đối tượng Album
+                Optional<Album> optionalAlbum = albumService.findAlbumByIdAdmin(albumId);
+                return optionalAlbum.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+            }
+            else{
+                // Không phải Admin thì trả về Album public
+                // Kiểm tra xem đối tượng có tồn tại hay không
+                // Nếu tồn tại, trả về đối tượng Album (Nếu Id là Album private thì sẽ không tìm thấy)
+                Optional<Album> optionalAlbum = albumService.findAlbumById(albumId);
+                return optionalAlbum.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+            }
             // Nếu không tồn tại, trả về HTTP 404 Not Found
-            return optionalAlbum.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
         } catch (Exception e) {
             // Xử lý ngoại lệ và trả về HTTP 500 Internal Server Error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -115,12 +127,27 @@ public class AlbumController {
     }
 
     //SEARCH
-    @GetMapping("/search")
-    public List<Album> searchAlbumsByAlbumName(@RequestParam String keyword) {
-        if (keyword != null)
-            return albumService.searchByAlbumName(keyword);
-        else{
-            return albumService.findAllPublicAlbums();
+    @GetMapping("/{userId}/search")
+    public List<Album> searchAlbumsByAlbumName(@PathVariable String userId,@RequestParam String keyword) {
+        if (keyword != null){ // keyword không null thì tìm kiếm và trả kết quả dựa theo role
+            if(userRepository2.existsByIdAndRoleAdmin(userId)){
+                //admin thì trả về Album tìm theo keyword không quan tâm policy
+                return albumService.searchByAlbumNameAdmin(keyword);
+            }
+            else{
+                // Không phải admin thì chỉ trả về có policy = public
+                return albumService.searchByAlbumName(keyword);
+            }
+        }
+        else{ // keyword null thì trả ra toàn bộ
+            if(userRepository2.existsByIdAndRoleAdmin(userId)){
+                // Admin thì tất cả
+                return albumRepository.findAll();
+            }
+            else{
+                // không phải admin thì Album policy = public
+                return albumService.findAllPublicAlbums();
+            }
         }
     }
 }

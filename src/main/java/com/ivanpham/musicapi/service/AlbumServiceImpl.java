@@ -67,8 +67,18 @@ public class AlbumServiceImpl implements AlbumService{
         return albumRepository.findById(albumId);
     }
 
+
+    @Override
+    public Optional<Album> findAlbumByIdAdmin(String albumId) {
+        return albumRepository.findByIdAdmin(albumId);
+    }
+
     @Override
     public List<Album> searchByAlbumName(String keyword) {
         return albumRepository.searchByAlbumName(keyword);
+    }
+
+    public List<Album> searchByAlbumNameAdmin(String keyword) {
+        return albumRepository.searchByAlbumNameAdmin(keyword);
     }
 }

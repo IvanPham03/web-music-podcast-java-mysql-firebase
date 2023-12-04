@@ -20,8 +20,15 @@ public interface AlbumRepository extends JpaRepository<Album, String> {
     @Override
     @Query("SELECT a FROM Album a WHERE a.id = :albumId AND a.albumPolicy = 'public'")
     Optional<Album> findById( @Param("albumId") String albumId);
+
+    @Query("SELECT a FROM Album a WHERE a.id = :albumId")
+    Optional<Album> findByIdAdmin( @Param("albumId") String albumId);
+
     @Query("SELECT a FROM Album a WHERE LOWER(a.albumName) LIKE LOWER(CONCAT('%', :keyword, '%')) AND a.albumPolicy = 'public'")
     List<Album> searchByAlbumName(@Param("keyword") String keyword);
+
+    @Query("SELECT a FROM Album a WHERE LOWER(a.albumName) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    List<Album> searchByAlbumNameAdmin(@Param("keyword") String keyword);
 
 //    @Modifying
 //    @Transactional

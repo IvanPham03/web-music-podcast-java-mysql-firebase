@@ -18,7 +18,9 @@ public interface PlaylistService {
 
     public void deleteById(String playlistId);
 
-    public Optional<Playlist> findAlbumById(String playlistId);
+    public Optional<Playlist> findPlaylistById(String playlistId);
+    public Optional<Playlist> findPlaylistByIdAdmin(String playlistId);
 
     public List<Playlist> searchByPlaylistName(String keyword);
+    public List<Playlist> searchByPlaylistNameAdmin(String keyword);
 }
