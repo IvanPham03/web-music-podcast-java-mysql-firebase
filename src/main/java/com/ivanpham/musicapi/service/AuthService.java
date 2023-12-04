@@ -18,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 //@NoArgsConstructor
@@ -39,6 +41,47 @@ public class AuthService {
 
     private UserDetails userDetails;
 
+
+    // tạo thêm admin
+    public void createAdmin(User newUser){
+        try {
+//             Kiểm tra xem tên người dùng đã tồn tại hay chưa
+            if (userRepository.existsByUsername(newUser.getUsername()) || userRepository.existsByEmail(newUser.getEmail())) {
+                if(userRepository.existsByUsername(newUser.getUsername())){
+                    throw new BadRequestException("Username is already taken!");
+                }
+                else{
+                    throw new BadRequestException("Email is already taken!");
+                }
+
+            }
+
+            // Lưu người dùng mới vào cơ sở dữ liệu
+            Role role = roleRepository.findByName("ADMIN");
+            if(role == null){
+                role = checkRoleExist();
+            }
+            newUser.setRoles(Arrays.asList(role));
+            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+
+            userRepository.save(newUser);
+
+        } catch (Exception e) {
+            System.out.println("Method createUser has error " + newUser.getUsername() +" " + (newUser.getPassword()) +" " + newUser.getEmail());
+        }
+    }
+
+    // lấy thông tin người dùng từ token
+    public Object getUserInfor(String token) {
+        if (jwtTokenProvider.validateToken(token)) { // Kiểm tra tính hợp lệ của token trước khi giải mã
+            String userEmailFromToken = jwtTokenProvider.getUserEmailFromToken(token);
+            // Lấy thông tin người dùng từ token và trả về UserDetails
+            if(userRepository.existsByEmail(userEmailFromToken)){
+                return userRepository.findByEmail(userEmailFromToken);
+            }
+        }
+        return null; // Trả về null nếu token không hợp lệ
+    }
     public void createUser(User newUser){
         try {
 //             Kiểm tra xem tên người dùng đã tồn tại hay chưa
@@ -71,24 +114,38 @@ public class AuthService {
         role.setName("USER");
         return roleRepository.save(role);
     }
-    public String login(User user) {
-//        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            user.getEmail(), user.getPassword()
-                    )
-            );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+    public Object login(User user) {
+        try {
 
-            System.out.println("Login successfully: ");
-            System.out.println("Username: " + userDetails.getUsername());
-            System.out.println("Authorities: " + userDetails.getAuthorities());
-            return jwtTokenProvider.createToken(authentication);
-//        } catch (Exception e) {
-//            System.out.println("User is logging: " + user.getUsername() + " " + (user.getRoles()) + " " + user.getEmail());
-//            return "";
-//        }
+            // kiêm tra người dùng tồn tài rồi mới check mật khẩu
+            User existingUser = userRepository.findByEmail(user.getEmail());
+            if(existingUser != null){
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                user.getEmail(), user.getPassword()
+                        )
+                );
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+                System.out.println("Login successfully: ");
+                System.out.println("Username: " + userDetails.getUsername());
+                System.out.println("Authorities: " + userDetails.getAuthorities());
+                String token = jwtTokenProvider.createToken(authentication);
+                Map<String, Object> response = new HashMap<>();
+                response.put("token", token);
+                response.put("role", existingUser.getRoles());
+                // tóm lại chức năng là xác thực, lấy thông tin và tạo token
+                return response;
+            }
+            else{
+                return null;
+            }
+
+        } catch (Exception e) {
+            System.out.println("User is logging: " + user.getUsername() + " " + (user.getRoles()) + " " + user.getEmail());
+            return "";
+        }
     }
 
 }

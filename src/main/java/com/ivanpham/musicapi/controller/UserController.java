@@ -11,7 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -45,6 +47,22 @@ public class UserController  {
     public ResponseEntity<User> getUserById(@PathVariable("id") String id) {
         Optional<User> userOptional = userRepository.findById(id);
         return userOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    // lấy bằng token
+    @GetMapping("/users/info")
+    public ResponseEntity<?> getUserToken(@RequestHeader("Authorization") String token) {
+        System.out.println(token);
+        // Kiểm tra nếu chuỗi bắt đầu bằng "Bearer " thì cắt bỏ phần này
+        if(token.startsWith("Bearer ")) {
+            token = token.substring(7); // Cắt bỏ "Bearer " từ đầu chuỗi
+            Object s = authService.getUserInfor(token);
+            if(s != null){
+                return new ResponseEntity<>(s, HttpStatus.OK);
+            }
+            return new ResponseEntity<>("not found", HttpStatus.NOT_FOUND);
+
+        }
+        return new ResponseEntity<>("not found token", HttpStatus.BAD_REQUEST);
     }
     // tạo người dùng mới
     @PostMapping("register")
@@ -86,7 +104,14 @@ public class UserController  {
     @PostMapping("login")
     public ResponseEntity<?> login(@RequestBody User user) {
 
-        String token = authService.login(user);
-        return new ResponseEntity<>("User login success", HttpStatus.OK);
+        Object res = authService.login(user);
+        if(res == null){
+            return new ResponseEntity<>("Tài khoản không tồn tại!", HttpStatus.NOT_FOUND);
+        }
+        else if(res.equals("")){
+            return new ResponseEntity<>("Server error!", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 }

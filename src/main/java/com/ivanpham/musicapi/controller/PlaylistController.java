@@ -27,6 +27,7 @@ public class PlaylistController {
 
     @Autowired
     private UserPlaylistRepository userPlaylistRepository;
+  
     // Trả về danh sách các Playlist có policy là public
     @GetMapping("/getAll/{userId}")
     public List<Playlist> getPublicPlaylists(@PathVariable String userId) {
@@ -50,7 +51,7 @@ public class PlaylistController {
 
         return new ArrayList<>(uniquePlaylists);
     }
-
+  
     // THÊM
     @PostMapping("/create/{userId}")
     public ResponseEntity<Playlist> createNewPlaylist(@RequestBody Playlist playlist, @PathVariable String userId){

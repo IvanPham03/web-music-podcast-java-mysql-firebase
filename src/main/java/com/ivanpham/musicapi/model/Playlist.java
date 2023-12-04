@@ -35,6 +35,7 @@
         @Column(name = "policy")
         private String playlistPolicy;
 
+
         @OneToMany(mappedBy = "playlist")
         private List<UserPlaylist> userPlaylists = new ArrayList<>();
 

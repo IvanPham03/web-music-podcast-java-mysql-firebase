@@ -18,6 +18,7 @@ public interface PlaylistRepository extends JpaRepository<Playlist, String> {
     @Query("SELECT COUNT(p) > 0 FROM Playlist p WHERE p.id = :playlistId AND p.user.id = :userId")
     boolean isOwner(@Param("playlistId") String playlistId, @Param("userId") String userId);
 
+
     @Query("SELECT p FROM Playlist p WHERE p.user.id = :userId")
     List<Playlist> returnOwnerPlaylist(@Param("userId") String userId);
 
@@ -34,9 +35,4 @@ public interface PlaylistRepository extends JpaRepository<Playlist, String> {
     @Query("SELECT p FROM Playlist p WHERE LOWER(p.playlistName) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<Playlist> searchByPlaylistNameAdmin(@Param("keyword") String keyword);
 
-//    @Query("SELECT DISTINCT p FROM Playlist p " +
-//            "JOIN p.user u " +
-//            "JOIN UserPlaylist up ON up.playlist.id = p.id " +
-//            "WHERE u.id = :userId OR up.user.id = :userId")
-//    List<Playlist> findPlaylistsByUserId(@Param("userId") String userId);
 }
