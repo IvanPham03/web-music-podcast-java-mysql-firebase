@@ -115,7 +115,7 @@ public class UserTrackSeeder {
         saveTrackPool(trackPool, track30);
 
 
-        // user
+        // artist
         User artist1 = userRepository.findByEmail("artist1@gmail.com");
         User artist2 = userRepository.findByEmail("artist2@gmail.com");
 
