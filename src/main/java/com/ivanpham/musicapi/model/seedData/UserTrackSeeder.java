@@ -32,22 +32,22 @@ public class UserTrackSeeder {
         }
     }
 
-    private static void saveArtistPool(List<User> pool, User user){
-        if (user != null){
-            pool.add(user);
-        }
-    }
+    // private static void saveArtistPool(List<User> pool, User user){
+    //     if (user != null){
+    //         pool.add(user);
+    //     }
+    // }
 
-    private static void saveTrackPool(List<Track> pool, Track track){
-        if (track != null){
-            pool.add(track);
-        }
-    }
+    // private static void saveTrackPool(List<Track> pool, Track track){
+    //     if (track != null){
+    //         pool.add(track);
+    //     }
+    // }
 
     private List<UserTrack> createUserTracks() {
         List<UserTrack> userTracks = new ArrayList<>();
-        List<User> artistPool = new ArrayList<>();  //pool này để chứa danh sách artist vừa tạo đợi duyệt xem có bị null hay không
-        List<Track> trackPool = new ArrayList<>(); //giống artistPoll nhưng dành cho Track
+        // List<User> artistPool = new ArrayList<>();  //pool này để chứa danh sách artist vừa tạo đợi duyệt xem có bị null hay không
+        // List<Track> trackPool = new ArrayList<>(); //giống artistPoll nhưng dành cho Track
 
         // Lấy track
         Track track1 = trackRepository.getByUrl("AnhDaYenBinhToiBietThuongMinh-PhamQuynhAnh-9010380.mp3");
@@ -82,57 +82,93 @@ public class UserTrackSeeder {
         Track track29 = trackRepository.getByUrl("ToTinh-JBHaCuong-6183895.mp3");
         Track track30 = trackRepository.getByUrl("YeuLaThe-UMIERightTeeBPBOUNCE-6229650.mp3");
 
-        //lưu vào pool kiểm tra lọc null
-        saveTrackPool(trackPool, track1);
-        saveTrackPool(trackPool, track2);
-        saveTrackPool(trackPool, track3);
-        saveTrackPool(trackPool, track4);
-        saveTrackPool(trackPool, track5);
-        saveTrackPool(trackPool, track6);
-        saveTrackPool(trackPool, track7);
-        saveTrackPool(trackPool, track8);
-        saveTrackPool(trackPool, track9);
-        saveTrackPool(trackPool, track10);
-        saveTrackPool(trackPool, track11);
-        saveTrackPool(trackPool, track12);
-        saveTrackPool(trackPool, track13);
-        saveTrackPool(trackPool, track14);
-        saveTrackPool(trackPool, track15);
-        saveTrackPool(trackPool, track16);
-        saveTrackPool(trackPool, track17);
-        saveTrackPool(trackPool, track18);
-        saveTrackPool(trackPool, track19);
-        saveTrackPool(trackPool, track20);
-        saveTrackPool(trackPool, track21);
-        saveTrackPool(trackPool, track22);
-        saveTrackPool(trackPool, track23);
-        saveTrackPool(trackPool, track24);
-        saveTrackPool(trackPool, track25);
-        saveTrackPool(trackPool, track26);
-        saveTrackPool(trackPool, track27);
-        saveTrackPool(trackPool, track28);
-        saveTrackPool(trackPool, track29);
-        saveTrackPool(trackPool, track30);
+        // //lưu vào pool kiểm tra lọc null
+        // saveTrackPool(trackPool, track1);
+        // saveTrackPool(trackPool, track2);
+        // saveTrackPool(trackPool, track3);
+        // saveTrackPool(trackPool, track4);
+        // saveTrackPool(trackPool, track5);
+        // saveTrackPool(trackPool, track6);
+        // saveTrackPool(trackPool, track7);
+        // saveTrackPool(trackPool, track8);
+        // saveTrackPool(trackPool, track9);
+        // saveTrackPool(trackPool, track10);
+        // saveTrackPool(trackPool, track11);
+        // saveTrackPool(trackPool, track12);
+        // saveTrackPool(trackPool, track13);
+        // saveTrackPool(trackPool, track14);
+        // saveTrackPool(trackPool, track15);
+        // saveTrackPool(trackPool, track16);
+        // saveTrackPool(trackPool, track17);
+        // saveTrackPool(trackPool, track18);
+        // saveTrackPool(trackPool, track19);
+        // saveTrackPool(trackPool, track20);
+        // saveTrackPool(trackPool, track21);
+        // saveTrackPool(trackPool, track22);
+        // saveTrackPool(trackPool, track23);
+        // saveTrackPool(trackPool, track24);
+        // saveTrackPool(trackPool, track25);
+        // saveTrackPool(trackPool, track26);
+        // saveTrackPool(trackPool, track27);
+        // saveTrackPool(trackPool, track28);
+        // saveTrackPool(trackPool, track29);
+        // saveTrackPool(trackPool, track30);
 
 
-        // artist
-        User artist1 = userRepository.findByEmail("artist1@gmail.com");
-        User artist2 = userRepository.findByEmail("artist2@gmail.com");
+        // user        
+        User PhamQuynhAnh = userRepository.findByUsername("PhamQuynhAnh");
+        User NQP = userRepository.findByUsername("NQP");
+        User ChauKhaiPhong = userRepository.findByUsername("ChauKhaiPhong");
+        User Keyo = userRepository.findByUsername("Keyo");
+        User TrangHan = userRepository.findByUsername("TrangHan");
+        User Seachain = userRepository.findByUsername("Seachain");
+        User EmD = userRepository.findByUsername("EmD");
+        User QuocAnh = userRepository.findByUsername("QuocAnh");
+        User LinhQueen = userRepository.findByUsername("LinhQueen");
+        User Misabae = userRepository.findByUsername("Misabae");
+        User LangLD = userRepository.findByUsername("LangLD");
+        User DinhUyen = userRepository.findByUsername("DinhUyen");
+        User TheSheep = userRepository.findByUsername("TheSheep");
+        User Orange = userRepository.findByUsername("Orange");
+        User MyMy = userRepository.findByUsername("MyMy");
+        User HoangPhuong = userRepository.findByUsername("HoangPhuong");
+        User RickyStar = userRepository.findByUsername("RickyStar");
+        User Rhy = userRepository.findByUsername("Rhy");
+        User JBHaCuong = userRepository.findByUsername("JBHaCuong");
+        User Umie = userRepository.findByUsername("Umie");
 
-        User artist3 = userRepository.findByEmail("artist3@gmail.com");
-        User artist4 = userRepository.findByEmail("artist4@gmail.com");
-        User artist5 = userRepository.findByEmail("artist5@gmail.com");
-        User artist6 = userRepository.findByEmail("artist6@gmail.com");
+        //Tạo và thêm UserTrack vào arraylist tên usertracks để tiến hành seed data 
+        userTracks.add(new UserTrack(PhamQuynhAnh, track1));
+        userTracks.add(new UserTrack(NQP, track2));
+        userTracks.add(new UserTrack(ChauKhaiPhong, track3));
+        userTracks.add(new UserTrack(Keyo, track4));
+        userTracks.add(new UserTrack(PhamQuynhAnh, track5));
+        userTracks.add(new UserTrack(TrangHan, track6));
+        userTracks.add(new UserTrack(ChauKhaiPhong, track7));
+        userTracks.add(new UserTrack(Seachain, track8));
+        userTracks.add(new UserTrack(EmD, track9));
+        userTracks.add(new UserTrack(QuocAnh, track10));
+        userTracks.add(new UserTrack(ChauKhaiPhong, track11));
+        userTracks.add(new UserTrack(ChauKhaiPhong, track12));
+        userTracks.add(new UserTrack(ChauKhaiPhong, track13));
+        userTracks.add(new UserTrack(LinhQueen, track14));
+        userTracks.add(new UserTrack(Misabae, track15));
+        userTracks.add(new UserTrack(LangLD, track16));
+        userTracks.add(new UserTrack(DinhUyen, track17));
+        userTracks.add(new UserTrack(LangLD, track18));
+        userTracks.add(new UserTrack(ChauKhaiPhong, track19));
+        userTracks.add(new UserTrack(TheSheep, track20));
+        userTracks.add(new UserTrack(ChauKhaiPhong, track21));
+        userTracks.add(new UserTrack(Orange, track22));
+        userTracks.add(new UserTrack(ChauKhaiPhong, track23));
+        userTracks.add(new UserTrack(MyMy, track24));
+        userTracks.add(new UserTrack(HoangPhuong, track25));
+        userTracks.add(new UserTrack(ChauKhaiPhong, track26));
+        userTracks.add(new UserTrack(RickyStar, track27));
+        userTracks.add(new UserTrack(Rhy, track28));
+        userTracks.add(new UserTrack(JBHaCuong, track29));
+        userTracks.add(new UserTrack(Umie, track30));
 
-
-//        lưu vào pool kiểm tra lọc null
-        saveArtistPool(artistPool, artist1);
-        saveArtistPool(artistPool, artist2);
-
-        saveArtistPool(artistPool, artist3);
-        saveArtistPool(artistPool, artist4);
-        saveArtistPool(artistPool, artist5);
-        saveArtistPool(artistPool, artist6);
 
 //        if(track1 != null && track2 != null && artist1 != null && artist2 != null){
 //           UserTrack userTrack1 = new UserTrack(artist2, track1);
@@ -144,12 +180,7 @@ public class UserTrackSeeder {
 //           userTracks.add(userTrack3);
 //        }
 
-        int artistIndex = 0; //biến đếm để chia đều bài hát cho các nghệ sĩ =))
-        for (Track i:trackPool) {
-            UserTrack userTrack = new UserTrack(artistPool.get(artistIndex), i);
-            userTracks.add(userTrack);
-            artistIndex = (artistIndex + 1) % artistPool.size();
-        }
+        
 
         return userTracks;
     }
