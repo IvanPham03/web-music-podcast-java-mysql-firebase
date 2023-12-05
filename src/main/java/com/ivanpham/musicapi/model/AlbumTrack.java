@@ -26,6 +26,7 @@ public class AlbumTrack {
 
     @ManyToOne
     @JoinColumn(name = "album_id")
+    @JsonView({View.BasicTrack.class})
     private Album album;
 
     @ManyToOne

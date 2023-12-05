@@ -47,12 +47,14 @@ public class UserController  {
     }
     // lấy bằng id
     @GetMapping("/users/{id}")
+    @JsonView(View.BasicUser.class)
     public ResponseEntity<User> getUserById(@PathVariable("id") String id) {
         Optional<User> userOptional = userRepository.findById(id);
         return userOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
     // lấy bằng token
     @GetMapping("/users/info")
+    @JsonView(View.BasicUser.class)
     public ResponseEntity<?> getUserToken(@RequestHeader("Authorization") String token) {
         System.out.println(token);
         // Kiểm tra nếu chuỗi bắt đầu bằng "Bearer " thì cắt bỏ phần này
