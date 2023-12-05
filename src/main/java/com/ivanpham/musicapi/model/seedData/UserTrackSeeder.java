@@ -38,7 +38,8 @@ public class UserTrackSeeder {
         // Lấy track
         Track track1 = trackRepository.getByUrl("AnhDaYenBinhToiBietThuongMinh-PhamQuynhAnh-9010380.mp3");
         Track track2 = trackRepository.getByUrl("AnhSeDuaEmVe-NQP-6309479.mp3");
-
+        Track track3 = trackRepository.getByUrl("AnTinhSangTrang-ChauKhaiPhongLeCuong-7976352.mp3");
+        Track track4 = trackRepository.getByUrl("ChiemBaoCuoi-Keyo-5992899.mp3");
 
         // user
         User artist1 = userRepository.findByEmail("artist1@gmail.com");
@@ -47,10 +48,15 @@ public class UserTrackSeeder {
            UserTrack userTrack1 = new UserTrack(artist2, track1);
            UserTrack userTrack2 = new UserTrack(artist1, track1);
            UserTrack userTrack3 = new UserTrack(artist1, track2);
+            UserTrack userTrack4 = new UserTrack(artist1, track3);
+            UserTrack userTrack5 = new UserTrack(artist1, track4);
+
 
            userTracks.add(userTrack1);
            userTracks.add(userTrack2);
            userTracks.add(userTrack3);
+            userTracks.add(userTrack4);
+            userTracks.add(userTrack5);
         }
 
         return userTracks;

@@ -30,8 +30,10 @@ public class Track {
     @Column(name = "url")
     @NonNull
     private String url;
+    @JsonView(View.BasicTrack.class)
     @Column(name = "createAt")
     private String createAt; // Sử dụng kiểu Timestamp
+    @JsonView(View.BasicTrack.class)
     @Column(name = "updateOn")
     private String updateOn;
     @Column(name = "genre")
