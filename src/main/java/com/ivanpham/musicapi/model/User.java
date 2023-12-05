@@ -21,29 +21,36 @@ import java.util.*;
         property = "id")
 public class User {
     @Id
-    @JsonView({View.BasicUser.class, View.BasicPlaylist.class, View.BasicAlbum.class,View.BasicTrack.class})
+    @JsonView({View.BasicUser.class, View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicTrack.class,View.BasicUserId.class})
     private String id = UUID.randomUUID().toString();
-    @JsonView({View.BasicUser.class, View.BasicPlaylist.class, View.BasicAlbum.class})
+    @JsonView({View.BasicUser.class, View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicTrack.class,View.BasicUserId.class})
     @Column(name = "username")
     @NonNull
     private String username;
     @Column(name = "email")
+    @JsonView({View.BasicTrack.class, View.BasicUser.class,View.BasicUserId.class})
     @NonNull
     private String email;
     @Column(name = "phoneNumber")
+    @JsonView({View.BasicUser.class, View.BasicTrack.class,View.BasicUserId.class})
     private String phoneNumber;
     @Column(name = "password")
     @NonNull
     private String password;
     @Column(name = "imgUser")
+    @JsonView({View.BasicUser.class, View.BasicTrack.class,View.BasicUserId.class})
     private String imgUser;
     @Column(name = "state")
+    @JsonView({View.BasicUser.class, View.BasicTrack.class,View.BasicUserId.class})
     private State state;
     @Column(name = "createAt")
+    @JsonView({View.BasicUser.class, View.BasicTrack.class,View.BasicUserId.class})
     private String createAt; // Sử dụng kiểu Timestamp
     @Column(name = "updateOn")
+    @JsonView({View.BasicUser.class, View.BasicTrack.class,View.BasicUserId.class})
     private String updateOn;
     @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @JsonView({View.BasicUser.class, View.BasicTrack.class})
     @Column(name="role")
     @JoinTable(
             name="users_roles",
@@ -63,6 +70,7 @@ public class User {
 
     // nhiều nhièu bằng bảng trung gian có nghĩa là nhiều nghệ sĩ 1 bài, 1 bài nhiều nghệ sĩ
     @OneToMany(mappedBy = "user")
+    @JsonView(View.BasicUser.class)
     private List<UserTrack> userTracks = new ArrayList<>();
 
     // 1 nhiều user - track (có nghĩa là người upload)
@@ -71,6 +79,7 @@ public class User {
 
     //
     @OneToMany(mappedBy = "user")
+    @JsonView(View.BasicUser.class)
     private List<UserPlaylist> userPlaylists = new ArrayList<>();
     // 1 nhiều user - album
     @OneToMany(mappedBy = "user")

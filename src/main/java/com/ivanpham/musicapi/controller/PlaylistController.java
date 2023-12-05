@@ -31,9 +31,14 @@ public class PlaylistController {
     private UserPlaylistRepository userPlaylistRepository;
   
     // Trả về danh sách các Playlist có policy là public
+    @GetMapping
+    @JsonView(View.BasicPlaylist.class)
+    public ResponseEntity<List<Playlist>> getAllPublicPlaylists(){
+        return ResponseEntity.ok(playlistService.getPublicPlaylists());
+    }
     @GetMapping("/getAll/{userId}")
     @JsonView(View.BasicPlaylist.class)
-    public List<Playlist> getPublicPlaylists(@PathVariable String userId) {
+    public List<Playlist> getPlaylists(@PathVariable String userId) {
         if(userRepository2.existsByIdAndRoleAdmin(userId)) {
             //Admin thì trả hết
             return playlistRepository.findAll();
@@ -58,6 +63,7 @@ public class PlaylistController {
   
     // THÊM
     @PostMapping("/create/{userId}")
+    @JsonView(View.BasicPlaylist.class)
     public ResponseEntity<Playlist> createNewPlaylist(@RequestBody Playlist playlist, @PathVariable String userId){
         // tạo một Playlist mới đính kèm theo userId của người tạo ra Playlist đó
         try {
@@ -78,6 +84,7 @@ public class PlaylistController {
             if (userRepository2.existsByIdAndRoleAdmin(userId)) {
                 playlist.setId(playlistId);
                 playlist.setUser(optionalPlaylist.get().getUser());
+                playlist.setCreateAt(optionalPlaylist.get().getCreateAt());
                 Playlist savePlaylist = playlistRepository.save(playlist);
                 return ResponseEntity.ok(savePlaylist);
             }
@@ -85,28 +92,33 @@ public class PlaylistController {
             // - True : thì được update
             if(playlistService.isOwner(playlistId, userId)) {
                 playlist.setId(playlistId);
+                playlist.setCreateAt(optionalPlaylist.get().getCreateAt());
                 playlist.setUser(optionalPlaylist.get().getUser());
                 Playlist savePlaylist = playlistRepository.save(playlist);
                 return ResponseEntity.ok(savePlaylist);
             }
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     // XÓA
     @DeleteMapping("/{playlistId}/deleteBy/{userId}")
-    public ResponseEntity<Void> deleteAlbumById(@PathVariable String playlistId, @PathVariable String userId) {
+    public ResponseEntity<String> deleteAlbumById(@PathVariable String playlistId, @PathVariable String userId) {
         // Kiểm tra Album id này có tồn tại
         if(playlistRepository.existsById(playlistId)) {
             // User là Admin thì xóa
-            if (userRepository2.existsByIdAndRoleAdmin(userId)) // Xem hàm này trong UserRepository2
+            if (userRepository2.existsByIdAndRoleAdmin(userId)) { // Xem hàm này trong UserRepository2
                 playlistService.deleteById(playlistId);
+                return ResponseEntity.ok("Xóa thành công!");
+            }
             // User là chủ sở hữu thì xóa
-            if (playlistService.isOwner(playlistId, userId)) // Xem hàm trong PlaylistRepository
+            if (playlistService.isOwner(playlistId, userId)) { // Xem hàm trong PlaylistRepository
                 playlistService.deleteById(playlistId);
-            return ResponseEntity.noContent().build();
+                return ResponseEntity.ok("Xóa thành công!");
+            }
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.notFound().build();
     }
 
     //Tìm theo ID
