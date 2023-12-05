@@ -20,26 +20,29 @@ import java.util.*;
 //        property = "id")
 public class Track {
     @Id
-    @JsonView({View.BasicTrack.class, View.BasicPlaylist.class, View.BasicAlbum.class})
+
+    @JsonView({View.BasicTrack.class, View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicUser.class})
     private String id = UUID.randomUUID().toString();
-    @JsonView({View.BasicTrack.class, View.BasicPlaylist.class, View.BasicAlbum.class})
+    @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicUser.class,View.BasicTrack.class})
     @Column(name = "TrackName")
     private String trackName;
     @Column(name = "description")
-    @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class})
+    @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicUser.class, View.BasicTrack.class})
     private String description;
     @Column(name = "url")
     @NonNull
-    @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class})
+    @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicUser.class, View.BasicTrack.class})
     private String url;
+    @JsonView({View.BasicTrack.class, View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicUser.class, View.BasicTrack.class})
     @Column(name = "createAt")
-    @JsonView({View.BasicTrack.class, View.BasicPlaylist.class, View.BasicAlbum.class})
+
     private String createAt; // Sử dụng kiểu Timestamp
+    @JsonView({View.BasicTrack.class, View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicUser.class, View.BasicTrack.class})
     @Column(name = "updateOn")
-    @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class})
+
     private String updateOn;
     @Column(name = "genre")
-    @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class})
+    @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicUser.class, View.BasicTrack.class})
     private String genre;
     @JsonView(View.BasicTrack.class)
     @OneToMany(mappedBy = "track")
@@ -48,13 +51,16 @@ public class Track {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonView({View.BasicTrack.class,View.BasicAlbum.class,View.BasicPlaylist.class})
     private User user;
 
 
     @OneToMany(mappedBy = "track")
+    @JsonView({View.BasicTrack.class})
     private List<AlbumTrack> albumTracks = new ArrayList<>();
 
     @OneToMany(mappedBy = "track")
+    @JsonView({View.BasicTrack.class})
     private List<PlaylistTrack> playlistTracks = new ArrayList<>();
 
     public Track(){

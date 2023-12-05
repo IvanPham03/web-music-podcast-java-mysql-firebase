@@ -1,6 +1,7 @@
 package com.ivanpham.musicapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.UUID;
         property = "id")
 public class UserPlaylist {
     @Id
+    @JsonView(View.BasicUser.class)
     private String id = UUID.randomUUID().toString();
 
     @ManyToOne
@@ -28,6 +30,7 @@ public class UserPlaylist {
     private User user;
 
     @ManyToOne
+    @JsonView(View.BasicUser.class)
     @JoinColumn(name = "playlist_id")
     private Playlist playlist;
 
