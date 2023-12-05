@@ -32,9 +32,11 @@ public class Track {
     @NonNull
     @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class})
     private String url;
+    @JsonView(View.BasicTrack.class)
     @Column(name = "createAt")
     @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class})
     private String createAt; // Sử dụng kiểu Timestamp
+    @JsonView(View.BasicTrack.class)
     @Column(name = "updateOn")
     @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class})
     private String updateOn;

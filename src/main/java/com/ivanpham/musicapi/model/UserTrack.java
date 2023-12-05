@@ -22,10 +22,10 @@ import java.util.UUID;
         property = "id")
 public class UserTrack {
     @Id
-    @JsonView(View.BasicTrack.class)
     private String id = UUID.randomUUID().toString();
-    @JsonView(View.BasicTrack.class)
+
     @ManyToOne
+    @JsonView(View.BasicTrack.class)
     @JoinColumn(name = "user_id")
     private User user;
 

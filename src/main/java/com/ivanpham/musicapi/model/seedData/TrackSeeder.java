@@ -38,9 +38,13 @@ public class TrackSeeder {
             // Tạo các đối tượng Track và thêm vào danh sách tracks
             Track track1 = new Track("Anh đã yên bình, tôi biết thương mình", "AnhDaYenBinhToiBietThuongMinh-PhamQuynhAnh-9010380.mp3","ballad", user);
             Track track2 = new Track("Anh sẽ đưa em về", "AnhSeDuaEmVe-NQP-6309479.mp3", "ballad", user);
+            Track track3 = new Track("AnTinhSangTrang", "AnTinhSangTrang-ChauKhaiPhongLeCuong-7976352.mp3","ballad", user);
+            Track track4 = new Track("ChiemBaoCuoi", "ChiemBaoCuoi-Keyo-5992899.mp3", "ballad", user);
 
             tracks.add(track1);
             tracks.add(track2);
+            tracks.add(track3);
+            tracks.add(track4);
         }
 
 
