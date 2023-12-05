@@ -23,4 +23,7 @@ public interface PlaylistService {
 
     public List<Playlist> searchByPlaylistName(String keyword);
     public List<Playlist> searchByPlaylistNameAdmin(String keyword);
+
+    public List<Playlist> returnOwnerPlaylist(String userId);
+
 }

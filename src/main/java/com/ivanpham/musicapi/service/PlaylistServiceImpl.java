@@ -61,4 +61,9 @@ public class PlaylistServiceImpl implements PlaylistService{
     public List<Playlist> searchByPlaylistNameAdmin(String keyword) {
         return playlistRepository.searchByPlaylistNameAdmin(keyword);
     }
+    @Override
+    public List<Playlist> returnOwnerPlaylist(String userId) {
+        return playlistRepository.returnOwnerPlaylist(userId);
+    }
+
 }

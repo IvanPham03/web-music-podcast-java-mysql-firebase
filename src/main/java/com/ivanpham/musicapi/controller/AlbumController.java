@@ -1,7 +1,9 @@
 package com.ivanpham.musicapi.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.ivanpham.musicapi.model.Album;
 import com.ivanpham.musicapi.model.Track;
+import com.ivanpham.musicapi.model.View;
 import com.ivanpham.musicapi.repository.AlbumRepository;
 import com.ivanpham.musicapi.repository.UserRepository;
 import com.ivanpham.musicapi.service.AlbumService;
@@ -26,6 +28,7 @@ public class AlbumController {
     @Autowired
     private UserRepository userRepository2;
     @GetMapping("/getAll/{userId}")
+    @JsonView(View.BasicAlbum.class)
     public ResponseEntity<List<Album>> getAllAlbums(@PathVariable String userId) {
         // Admin thì trả hết kể cả private
         if(userRepository2.existsByIdAndRoleAdmin(userId)) // hàm kiểm tra có phải admin không
@@ -103,6 +106,7 @@ public class AlbumController {
 
     //Tìm theo ID
     @GetMapping("/{userId}/getAlbumById/{albumId}")
+    @JsonView(View.BasicAlbum.class)
     public ResponseEntity<Album> getAlbumById(@PathVariable String userId,@PathVariable String albumId) {
         try {
             if(userRepository2.existsByIdAndRoleAdmin(userId)) {
@@ -128,6 +132,7 @@ public class AlbumController {
 
     //SEARCH
     @GetMapping("/{userId}/search")
+    @JsonView(View.BasicAlbum.class)
     public List<Album> searchAlbumsByAlbumName(@PathVariable String userId,@RequestParam String keyword) {
         if (keyword != null){ // keyword không null thì tìm kiếm và trả kết quả dựa theo role
             if(userRepository2.existsByIdAndRoleAdmin(userId)){

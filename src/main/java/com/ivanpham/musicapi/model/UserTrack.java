@@ -1,6 +1,7 @@
 package com.ivanpham.musicapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class UserTrack {
     private String id = UUID.randomUUID().toString();
 
     @ManyToOne
+    @JsonView(View.BasicTrack.class)
     @JoinColumn(name = "user_id")
     private User user;
 

@@ -1,5 +1,7 @@
 package com.ivanpham.musicapi.controller;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.ivanpham.musicapi.model.User;
+import com.ivanpham.musicapi.model.View;
 import com.ivanpham.musicapi.repository.RoleRepository;
 import com.ivanpham.musicapi.repository.UserRepository;
 import com.ivanpham.musicapi.service.AuthService;
@@ -38,6 +40,7 @@ public class UserController  {
 
     // lấy tất cả
     @GetMapping("/users")
+    @JsonView(View.BasicUser.class)
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userRepository.findAll();
         return ResponseEntity.ok(users);
