@@ -31,9 +31,14 @@ public class PlaylistController {
     private UserPlaylistRepository userPlaylistRepository;
   
     // Trả về danh sách các Playlist có policy là public
+    @GetMapping
+    @JsonView(View.BasicPlaylist.class)
+    public ResponseEntity<List<Playlist>> getAllPublicPlaylists(){
+        return ResponseEntity.ok(playlistService.getPublicPlaylists());
+    }
     @GetMapping("/getAll/{userId}")
     @JsonView(View.BasicPlaylist.class)
-    public List<Playlist> getPublicPlaylists(@PathVariable String userId) {
+    public List<Playlist> getPlaylists(@PathVariable String userId) {
         if(userRepository2.existsByIdAndRoleAdmin(userId)) {
             //Admin thì trả hết
             return playlistRepository.findAll();

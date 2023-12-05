@@ -27,6 +27,12 @@ public class AlbumController {
 
     @Autowired
     private UserRepository userRepository2;
+
+    @GetMapping
+    @JsonView(View.BasicAlbum.class)
+    public ResponseEntity<List<Album>> getAllPublicAlbums(){
+        return ResponseEntity.ok(albumService.findAllPublicAlbums());
+    }
     @GetMapping("/getAll/{userId}")
     @JsonView(View.BasicAlbum.class)
     public ResponseEntity<List<Album>> getAllAlbums(@PathVariable String userId) {

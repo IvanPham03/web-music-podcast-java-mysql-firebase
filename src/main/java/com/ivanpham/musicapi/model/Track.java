@@ -33,15 +33,13 @@ public class Track {
     @NonNull
     @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicUser.class, View.BasicTrack.class})
     private String url;
-    @JsonView(View.BasicTrack.class)
+    @JsonView({View.BasicTrack.class, View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicUser.class, View.BasicTrack.class})
     @Column(name = "createAt")
 
-    @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicUser.class, View.BasicTrack.class})
     private String createAt; // Sử dụng kiểu Timestamp
-    @JsonView(View.BasicTrack.class)
+    @JsonView({View.BasicTrack.class, View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicUser.class, View.BasicTrack.class})
     @Column(name = "updateOn")
 
-    @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicUser.class, View.BasicTrack.class})
     private String updateOn;
     @Column(name = "genre")
     @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicUser.class, View.BasicTrack.class})
@@ -53,7 +51,7 @@ public class Track {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonView({View.BasicTrack.class})
+    @JsonView({View.BasicTrack.class,View.BasicAlbum.class,View.BasicPlaylist.class})
     private User user;
 
 

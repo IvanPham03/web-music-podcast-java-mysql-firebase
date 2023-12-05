@@ -16,9 +16,9 @@ import java.util.*;
 @Data
 @Builder
 @Table(name= "user")
-//@JsonIdentityInfo(
-//        generator = ObjectIdGenerators.PropertyGenerator.class,
-//        property = "id")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class User {
     @Id
     @JsonView({View.BasicUser.class, View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicTrack.class})
