@@ -16,14 +16,14 @@ import java.util.*;
 @Data
 @Builder
 @Table(name= "user")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 public class User {
     @Id
-    @JsonView(View.BasicUser.class)
+    @JsonView({View.BasicUser.class, View.BasicPlaylist.class, View.BasicAlbum.class})
     private String id = UUID.randomUUID().toString();
-    @JsonView(View.BasicTrack.class)
+    @JsonView({View.BasicUser.class, View.BasicPlaylist.class, View.BasicAlbum.class})
     @Column(name = "username")
     @NonNull
     private String username;

@@ -15,30 +15,35 @@ import java.util.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "track")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 public class Track {
     @Id
-    @JsonView(View.BasicTrack.class)
+    @JsonView({View.BasicTrack.class, View.BasicPlaylist.class, View.BasicAlbum.class})
     private String id = UUID.randomUUID().toString();
-    @JsonView(View.BasicTrack.class)
+    @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class})
     @Column(name = "TrackName")
     private String trackName;
     @Column(name = "description")
+    @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class})
     private String description;
     @Column(name = "url")
     @NonNull
+    @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class})
     private String url;
     @JsonView(View.BasicTrack.class)
     @Column(name = "createAt")
+    @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class})
     private String createAt; // Sử dụng kiểu Timestamp
     @JsonView(View.BasicTrack.class)
     @Column(name = "updateOn")
+    @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class})
     private String updateOn;
     @Column(name = "genre")
+    @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class})
     private String genre;
-    @JsonView(View.BasicTrack.class)
+//    @JsonView(View.BasicPlaylist.class)
     @OneToMany(mappedBy = "track")
     private List<UserTrack> userTracks = new ArrayList<>();
 

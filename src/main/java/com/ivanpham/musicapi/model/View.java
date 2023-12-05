@@ -8,5 +8,11 @@ public class View {
     public static class BasicUser{
 
     }
+    public static class BasicPlaylist{
 
+    }
+
+    public static class BasicAlbum{
+
+    }
 }

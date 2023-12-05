@@ -1,7 +1,9 @@
 package com.ivanpham.musicapi.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.ivanpham.musicapi.model.Album;
 import com.ivanpham.musicapi.model.Playlist;
+import com.ivanpham.musicapi.model.View;
 import com.ivanpham.musicapi.repository.PlaylistRepository;
 import com.ivanpham.musicapi.repository.UserPlaylistRepository;
 import com.ivanpham.musicapi.repository.UserRepository;
@@ -30,6 +32,7 @@ public class PlaylistController {
   
     // Trả về danh sách các Playlist có policy là public
     @GetMapping("/getAll/{userId}")
+    @JsonView(View.BasicPlaylist.class)
     public List<Playlist> getPublicPlaylists(@PathVariable String userId) {
         if(userRepository2.existsByIdAndRoleAdmin(userId)) {
             //Admin thì trả hết
@@ -41,6 +44,7 @@ public class PlaylistController {
 
     // Trả về PlayList của người dùng (Tạo hoặc Follow)
     @GetMapping("/getAllPlaylistByUserId/{userId}")
+    @JsonView(View.BasicPlaylist.class)
     public List<Playlist> getAllUserPlaylists(@PathVariable String userId){
 
         List<Playlist> list1 = userPlaylistRepository.findPlaylistsByUserId(userId);
@@ -107,6 +111,7 @@ public class PlaylistController {
 
     //Tìm theo ID
     @GetMapping("/{userId}/getPlaylistById/{playlistId}")
+    @JsonView(View.BasicPlaylist.class)
     public ResponseEntity<Playlist> getPlaylistById(@PathVariable String userId,@PathVariable String playlistId) {
         try {
             if(userRepository2.existsByIdAndRoleAdmin(userId)) {
@@ -132,6 +137,7 @@ public class PlaylistController {
 
     //SEARCH
     @GetMapping("/{userId}/search")
+    @JsonView(View.BasicPlaylist.class)
     public List<Playlist> searchPlaylistByName(@PathVariable String userId,@RequestParam String keyword) {
         //Nếu Keyword rỗng thì trả các playlist public đối với không phải admin
         // Admin thì tìm Playlist có tên trừng với keyword kể cả có là private
