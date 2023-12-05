@@ -13,10 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 
 @CrossOrigin("*")
@@ -51,6 +48,21 @@ public class UserController  {
     public ResponseEntity<User> getUserById(@PathVariable("id") String id) {
         Optional<User> userOptional = userRepository.findById(id);
         return userOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    // Lấy bằng role là Artist
+    @GetMapping("/users/getRoleArtist")
+    @JsonView(View.BasicUserId.class)
+    public ResponseEntity<List<User>> getUserByRoleArtist() {
+        List<User> users = userRepository.findByRoleArtist();
+        if(users.size() <= 25) {
+            Collections.shuffle(users);
+            return ResponseEntity.ok(users);
+        }
+        else{
+            Collections.shuffle(users);
+            List<User> usersSublist = users.subList(0, 25);
+            return ResponseEntity.ok(usersSublist);
+        }
     }
     // lấy bằng token
     @GetMapping("/users/info")

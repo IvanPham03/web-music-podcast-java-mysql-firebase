@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 
 public interface UserRepository extends JpaRepository<User, String> {
     User findByEmail(String mail);
@@ -14,4 +16,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 //    Page<User> findByRoles(Role role, Pageable pageable);
     @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u JOIN u.roles r WHERE r.id = 1 AND u.id = :userId")
     boolean existsByIdAndRoleAdmin(@Param("userId") String userId);
+
+    @Query("SELECT u FROM User u JOIN u.roles r WHERE r.id = 3")
+    List<User> findByRoleArtist();
 }
