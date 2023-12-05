@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +36,15 @@ public class TrackController {
     public ResponseEntity<List<Track>> getTracks() {
         List<Track> tracks = trackRepository.findAll();
         return ResponseEntity.ok(tracks);
+    }
+
+    // Lấy một track ngẫu nhiên trong Track
+    @GetMapping("/getOneRandomTrack")
+    @JsonView(View.BasicTrack.class)
+    public ResponseEntity<Track> getOneRandomTrack() {
+        List<Track> tracks = trackRepository.findAll();
+        Collections.shuffle(tracks);
+        return ResponseEntity.ok(tracks.get(0));
     }
 
     @GetMapping("/{id}")

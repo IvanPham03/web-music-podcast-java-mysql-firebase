@@ -47,7 +47,7 @@ public class UserController  {
     }
     // lấy bằng id
     @GetMapping("/users/{id}")
-    @JsonView(View.BasicUser.class)
+    @JsonView(View.BasicUserId.class)
     public ResponseEntity<User> getUserById(@PathVariable("id") String id) {
         Optional<User> userOptional = userRepository.findById(id);
         return userOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
