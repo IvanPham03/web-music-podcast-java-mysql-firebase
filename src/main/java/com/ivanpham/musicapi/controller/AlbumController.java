@@ -59,6 +59,7 @@ public class AlbumController {
             // - True : thì được update
             if (userRepository2.existsByIdAndRoleAdmin(userId)) {
                 album.setId(albumId);
+                album.setCreateAt(optionalAlbum.get().getCreateAt());
                 album.setUser(optionalAlbum.get().getUser());
                 Album saveAlbum = albumRepository.save(album);
                 return ResponseEntity.ok(saveAlbum);
@@ -67,6 +68,7 @@ public class AlbumController {
             // - True : thì được update
             if(albumService.isOwner(albumId, userId)) {
                 album.setId(albumId);
+                album.setCreateAt(optionalAlbum.get().getCreateAt());
                 album.setUser(optionalAlbum.get().getUser());
                 Album saveAlbum = albumRepository.save(album);
                 return ResponseEntity.ok(saveAlbum);
@@ -77,6 +79,7 @@ public class AlbumController {
 
     // THÊM
     @PostMapping("/create/{userId}")
+    @JsonView(View.BasicAlbum.class)
     public ResponseEntity<Album> createNewAlbum(@RequestBody Album album, @PathVariable String userId){
         // tạo một Album mới đính kèm theo userId của người tạo ra Album đó
         try {
@@ -96,18 +99,21 @@ public class AlbumController {
 
     // XÓA
     @DeleteMapping("/{albumId}/deleteBy/{userId}")
-    public ResponseEntity<Void> deleteAlbumById(@PathVariable String albumId, @PathVariable String userId) {
+    public ResponseEntity<String> deleteAlbumById(@PathVariable String albumId, @PathVariable String userId) {
         // Kiểm tra Album id này có tồn tại
         if(albumRepository.existsById(albumId)) {
             // User là Admin thì xóa
-            if (userRepository2.existsByIdAndRoleAdmin(userId)) // Xem hàm này trong UserRepository2
+            if (userRepository2.existsByIdAndRoleAdmin(userId)) {// Xem hàm này trong UserRepository2
                 albumService.deleteById(albumId);
+                return ResponseEntity.ok("Xóa thành công!");
+            }
             // User là chủ sở hữu thì xóa
-            if (albumService.isOwner(albumId, userId)) // Xem hàm trong AlbumRepository
+            if (albumService.isOwner(albumId, userId)){ // Xem hàm trong AlbumRepository
                 albumService.deleteById(albumId);
-            return ResponseEntity.noContent().build();
+                return ResponseEntity.ok("Xóa thành công!");
+            }
         }
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Xóa không thành công!");
     }
 
     //Tìm theo ID
