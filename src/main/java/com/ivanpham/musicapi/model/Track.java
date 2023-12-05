@@ -22,7 +22,7 @@ public class Track {
     @Id
     @JsonView({View.BasicTrack.class, View.BasicPlaylist.class, View.BasicAlbum.class})
     private String id = UUID.randomUUID().toString();
-    @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class})
+    @JsonView({View.BasicTrack.class, View.BasicPlaylist.class, View.BasicAlbum.class})
     @Column(name = "TrackName")
     private String trackName;
     @Column(name = "description")
@@ -32,18 +32,16 @@ public class Track {
     @NonNull
     @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class})
     private String url;
-    @JsonView(View.BasicTrack.class)
     @Column(name = "createAt")
-    @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class})
+    @JsonView({View.BasicTrack.class, View.BasicPlaylist.class, View.BasicAlbum.class})
     private String createAt; // Sử dụng kiểu Timestamp
-    @JsonView(View.BasicTrack.class)
     @Column(name = "updateOn")
     @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class})
     private String updateOn;
     @Column(name = "genre")
     @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class})
     private String genre;
-//    @JsonView(View.BasicPlaylist.class)
+    @JsonView(View.BasicTrack.class)
     @OneToMany(mappedBy = "track")
     private List<UserTrack> userTracks = new ArrayList<>();
 
