@@ -24,8 +24,9 @@ public class UserTrack {
     @Id
     @JsonView({View.BasicTrack.class, View.BasicUser.class})
     private String id = UUID.randomUUID().toString();
-    @JsonView(View.BasicTrack.class)
+
     @ManyToOne
+    @JsonView(View.BasicTrack.class)
     @JoinColumn(name = "user_id")
     private User user;
 

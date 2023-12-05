@@ -41,6 +41,7 @@
         private String updateOn;
         @Column(name = "policy")
         @JsonView({View.BasicTrack.class, View.BasicPlaylist.class, View.BasicUser.class})
+
         private String playlistPolicy;
 
 

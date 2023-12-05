@@ -20,6 +20,7 @@ import java.util.*;
 //        property = "id")
 public class Track {
     @Id
+
     @JsonView({View.BasicTrack.class, View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicUser.class})
     private String id = UUID.randomUUID().toString();
     @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicUser.class,View.BasicTrack.class})
@@ -32,10 +33,14 @@ public class Track {
     @NonNull
     @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicUser.class, View.BasicTrack.class})
     private String url;
+    @JsonView(View.BasicTrack.class)
     @Column(name = "createAt")
+
     @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicUser.class, View.BasicTrack.class})
     private String createAt; // Sử dụng kiểu Timestamp
+    @JsonView(View.BasicTrack.class)
     @Column(name = "updateOn")
+
     @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicUser.class, View.BasicTrack.class})
     private String updateOn;
     @Column(name = "genre")
