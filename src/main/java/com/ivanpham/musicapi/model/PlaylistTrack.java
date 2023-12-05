@@ -25,11 +25,12 @@ public class PlaylistTrack {
     private String id = UUID.randomUUID().toString();
     @ManyToOne
     @JoinColumn(name = "playlist_id")
+    @JsonView({View.BasicTrack.class})
     private Playlist playlist;
 
     @ManyToOne
     @JoinColumn(name = "track_id")
-    @JsonView(View.BasicPlaylist.class)
+    @JsonView({View.BasicPlaylist.class, View.BasicUser.class})
     private Track track;
 
     public PlaylistTrack(Playlist playlist, Track track){

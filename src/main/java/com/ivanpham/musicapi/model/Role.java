@@ -1,5 +1,6 @@
 package com.ivanpham.musicapi.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,9 +19,11 @@ public class Role
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView({View.BasicUser.class, View.BasicTrack.class})
     private Long id;
 
     @Column(nullable=false, unique=true)
+    @JsonView({View.BasicUser.class, View.BasicTrack.class})
     private String name;
 
     @ManyToMany(mappedBy="roles")

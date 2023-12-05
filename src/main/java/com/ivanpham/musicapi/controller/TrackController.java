@@ -37,7 +37,7 @@ public class TrackController {
     }
 
     @GetMapping("/{id}")
-
+    @JsonView(View.BasicTrack.class)
     public ResponseEntity<Track> getTrackById(@PathVariable String id) {
         Optional<Track> optionalTrack = trackRepository.findById(id);
         return optionalTrack.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());

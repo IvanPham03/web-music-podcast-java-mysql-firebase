@@ -17,30 +17,30 @@
     @AllArgsConstructor
     @Entity
     @Table(name = "playlist")
-    @JsonIdentityInfo(
-            generator = ObjectIdGenerators.PropertyGenerator.class,
-            property = "id")
+//    @JsonIdentityInfo(
+//            generator = ObjectIdGenerators.PropertyGenerator.class,
+//            property = "id")
     public class Playlist {
         @Id
-        @JsonView(View.BasicPlaylist.class)
+        @JsonView({View.BasicPlaylist.class, View.BasicUser.class, View.BasicTrack.class})
         private String id = UUID.randomUUID().toString();
         @Column(name = "playlistName")
-        @JsonView(View.BasicPlaylist.class)
+        @JsonView({View.BasicPlaylist.class, View.BasicUser.class, View.BasicTrack.class})
         private String playlistName;
         @Column(name = "playlistDescription")
-        @JsonView(View.BasicPlaylist.class)
+        @JsonView({View.BasicTrack.class, View.BasicPlaylist.class, View.BasicUser.class})
         private String playlistDescription;
         @Column(name = "imgPlaylist")
-        @JsonView(View.BasicPlaylist.class)
+        @JsonView({View.BasicTrack.class, View.BasicPlaylist.class, View.BasicUser.class})
         private String imgPlaylist;
         @Column(name = "createAt")
-        @JsonView(View.BasicPlaylist.class)
+        @JsonView({View.BasicTrack.class, View.BasicPlaylist.class, View.BasicUser.class})
         private String createAt; // Sử dụng kiểu Timestamp
         @Column(name = "updateOn")
-        @JsonView(View.BasicPlaylist.class)
+        @JsonView({View.BasicTrack.class, View.BasicPlaylist.class, View.BasicUser.class})
         private String updateOn;
         @Column(name = "policy")
-        @JsonView(View.BasicPlaylist.class)
+        @JsonView({View.BasicTrack.class, View.BasicPlaylist.class, View.BasicUser.class})
         private String playlistPolicy;
 
 
@@ -48,10 +48,10 @@
         private List<UserPlaylist> userPlaylists = new ArrayList<>();
 
         @OneToMany(mappedBy = "playlist")
-        @JsonView(View.BasicPlaylist.class)
+        @JsonView({View.BasicPlaylist.class, View.BasicUser.class})
         private List<PlaylistTrack> playlistTracks = new ArrayList<>();
         @ManyToOne
-        @JsonView(View.BasicPlaylist.class)
+        @JsonView({View.BasicPlaylist.class, View.BasicTrack.class})
         @JoinColumn(name = "user_id")
         private User user;
         public Playlist(){
