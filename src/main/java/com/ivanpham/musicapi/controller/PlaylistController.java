@@ -98,7 +98,7 @@ public class PlaylistController {
                 return ResponseEntity.ok(savePlaylist);
             }
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     // XÓA
@@ -116,8 +116,9 @@ public class PlaylistController {
                 playlistService.deleteById(playlistId);
                 return ResponseEntity.ok("Xóa thành công!");
             }
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        return ResponseEntity.ok("Xóa không thành công!");
+        return ResponseEntity.notFound().build();
     }
 
     //Tìm theo ID

@@ -74,7 +74,7 @@ public class AlbumController {
                 return ResponseEntity.ok(saveAlbum);
             }
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     // THÊM
@@ -112,8 +112,9 @@ public class AlbumController {
                 albumService.deleteById(albumId);
                 return ResponseEntity.ok("Xóa thành công!");
             }
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        return ResponseEntity.ok("Xóa không thành công!");
+        return ResponseEntity.notFound().build();
     }
 
     //Tìm theo ID
