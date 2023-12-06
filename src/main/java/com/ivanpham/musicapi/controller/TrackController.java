@@ -91,6 +91,7 @@ public class TrackController {
     }
 
     @PostMapping
+    @JsonView(View.BasicTrack.class)
     public ResponseEntity<Track> addTrack(@RequestBody Track track) {
         try {
             Track savedTrack = trackRepository.save(track);
@@ -101,11 +102,20 @@ public class TrackController {
     }
 
     @PutMapping("/{id}")
+    @JsonView(View.BasicTrack.class)
     public ResponseEntity<Track> updateTrack(@PathVariable String id, @RequestBody Track updatedTrack) {
         Optional<Track> optionalTrack = trackRepository.findById(id);
+
         if (optionalTrack.isPresent()) {
-            updatedTrack.setId(id); // Make sure the updated track has the same ID
-            Track savedTrack = trackRepository.save(updatedTrack);
+//            updatedTrack.setId(id); // Make sure the updated track has the same ID
+//            Track savedTrack = trackRepository.save(updatedTrack);
+            Track savedTrack = optionalTrack.orElse(null);
+            savedTrack.setTrackName(updatedTrack.getTrackName());
+            savedTrack.setCreateAt(updatedTrack.getCreateAt());
+            savedTrack.setUpdateOn(updatedTrack.getUpdateOn());
+            savedTrack.setGenre(updatedTrack.getGenre());
+            trackRepository.save(savedTrack);
+
             return ResponseEntity.ok(savedTrack);
         } else {
             return ResponseEntity.notFound().build();
