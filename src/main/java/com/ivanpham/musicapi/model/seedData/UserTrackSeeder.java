@@ -32,22 +32,22 @@ public class UserTrackSeeder {
         }
     }
 
-    private static void saveArtistPool(List<User> pool, User user){
-        if (user != null){
-            pool.add(user);
-        }
-    }
+    // private static void saveArtistPool(List<User> pool, User user){
+    //     if (user != null){
+    //         pool.add(user);
+    //     }
+    // }
 
-    private static void saveTrackPool(List<Track> pool, Track track){
-        if (track != null){
-            pool.add(track);
-        }
-    }
+    // private static void saveTrackPool(List<Track> pool, Track track){
+    //     if (track != null){
+    //         pool.add(track);
+    //     }
+    // }
 
     private List<UserTrack> createUserTracks() {
         List<UserTrack> userTracks = new ArrayList<>();
-        List<User> artistPool = new ArrayList<>();  //pool này để chứa danh sách artist vừa tạo đợi duyệt xem có bị null hay không
-        List<Track> trackPool = new ArrayList<>(); //giống artistPoll nhưng dành cho Track
+        // List<User> artistPool = new ArrayList<>();  //pool này để chứa danh sách artist vừa tạo đợi duyệt xem có bị null hay không
+        // List<Track> trackPool = new ArrayList<>(); //giống artistPoll nhưng dành cho Track
 
         // Lấy track
         Track track1 = trackRepository.getByUrl("AnhDaYenBinhToiBietThuongMinh-PhamQuynhAnh-9010380.mp3");
@@ -144,12 +144,7 @@ public class UserTrackSeeder {
 //           userTracks.add(userTrack3);
 //        }
 
-        int artistIndex = 0; //biến đếm để chia đều bài hát cho các nghệ sĩ =))
-        for (Track i:trackPool) {
-            UserTrack userTrack = new UserTrack(artistPool.get(artistIndex), i);
-            userTracks.add(userTrack);
-            artistIndex = (artistIndex + 1) % artistPool.size();
-        }
+        
 
         return userTracks;
     }
