@@ -87,6 +87,9 @@ public class User {
     // 1 nhieu play list
     @OneToMany(mappedBy = "user",cascade=CascadeType.ALL)
     private List<Playlist> playlists = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ArtistTrack> artistTracks;
     public User(String email, String username, String password, List<Role> roles) {
         this.email = email;
         this.username = username;

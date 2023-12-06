@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.ivanpham.musicapi.model.Track;
 import com.ivanpham.musicapi.model.View;
 import com.ivanpham.musicapi.repository.TrackRepository;
+import com.ivanpham.musicapi.repository.UserRepository;
 import com.ivanpham.musicapi.service.TrackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -30,6 +31,9 @@ public class TrackController {
     @Autowired
     private TrackRepository trackRepository;
     private TrackService trackService;
+
+    @Autowired
+    private UserRepository userRepository2;
 
     @GetMapping
     @JsonView(View.BasicTrack.class)
@@ -122,14 +126,24 @@ public class TrackController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTrack(@PathVariable String id) {
-        if (trackRepository.existsById(id)) {
-            trackRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
+    // Xóa Track
+    @DeleteMapping("/{trackId}/deleteBy/{userId}")
+    public ResponseEntity<String> deleteTrack(@PathVariable String trackId, @PathVariable String userId) {
+        // Kiểm tra Album id này có tồn tại
+        if(trackRepository.existsById(trackId)) {
+            // User là Admin thì xóa
+            if (userRepository2.existsByIdAndRoleAdmin(userId)) { // Xem hàm này trong UserRepository2
+                trackRepository.deleteById(trackId);
+                return ResponseEntity.ok("Xóa thành công!");
+            }
+            // User là chủ sở hữu thì xóa
+            if (trackRepository.isOwner(trackId, userId)) { // Xem hàm trong trackRepository
+                trackRepository.deleteById(trackId);
+                return ResponseEntity.ok("Xóa thành công!");
+            }
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+        return ResponseEntity.notFound().build();
     }
 
 //
