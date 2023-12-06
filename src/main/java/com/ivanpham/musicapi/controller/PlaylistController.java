@@ -65,7 +65,7 @@ public class PlaylistController {
     // THÊM
     @PostMapping("/create/{userId}")
     @JsonView(View.BasicPlaylist.class)
-    public ResponseEntity<Playlist> createNewPlaylist(@RequestBody Playlist playlist, @PathVariable String userId){
+    public ResponseEntity<Playlist> createNewPlaylist(@Valid @RequestBody Playlist playlist, @PathVariable String userId){
         // tạo một Playlist mới đính kèm theo userId của người tạo ra Playlist đó
         try {
             Playlist savePlaylist = playlistService.createPlaylist(playlist,userId); // xem hàm này trong AlbumServiceImpl

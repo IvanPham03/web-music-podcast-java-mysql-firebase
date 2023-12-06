@@ -86,7 +86,7 @@ public class AlbumController {
     // THÊM
     @PostMapping("/create/{userId}")
     @JsonView(View.BasicAlbum.class)
-    public ResponseEntity<Album> createNewAlbum(@RequestBody Album album, @PathVariable String userId){
+    public ResponseEntity<Album> createNewAlbum(@Valid @RequestBody Album album, @PathVariable String userId){
         // tạo một Album mới đính kèm theo userId của người tạo ra Album đó
         try {
             Album saveAlbum = albumService.createAlbum(album,userId); // xem hàm này trong AlbumServiceImpl
