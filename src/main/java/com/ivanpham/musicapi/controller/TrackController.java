@@ -199,7 +199,13 @@ public class TrackController {
             return ResponseEntity.badRequest().body("Không tìm thấy Playlist nào chứa Track này");
         }
     }
-
+    @ResponseBody
+    @GetMapping("/search")
+    public List<Track> searchTrack( @RequestParam("keywords") Optional<String> keyword){
+        System.out.println(keyword);
+        List<Track> list = this.trackRepository.findAll();
+        if(keyword.isPresent()){
+            list = this.trackRepository.searchTrack(keyword.orElse(""));
     // Lấy Track theo Playlist Id
     @GetMapping("/byPlaylist/{playlistId}")
     @JsonView(View.BasicTrack.class)

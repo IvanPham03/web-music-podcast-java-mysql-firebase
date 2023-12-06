@@ -16,9 +16,9 @@ public interface TrackRepository extends JpaRepository<Track,String> {
     @Query("SELECT t FROM Track t JOIN t.playlistTracks pt WHERE pt.playlist.id = :playlistId")
     List<Track> findTrackByPlaylistId(@Param("playlistId") String playlistId);
 
-//    //Tim kiem
-//    @Query("SELECT c FROM Track c WHERE c.trackName LIKE %?1%")
-//    List<Track> searchTrack(String keyword);
+    //Tim kiem
+    @Query("SELECT c FROM Track c WHERE c.trackName LIKE %?1%")
+    List<Track> searchTrack(String keyword);
 //
 //    //kiem tra ton tai ten
 //    @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM Track t WHERE t.trackName = :trackName")
