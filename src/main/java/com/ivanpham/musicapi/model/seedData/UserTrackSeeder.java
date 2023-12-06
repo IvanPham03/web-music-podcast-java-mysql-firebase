@@ -82,39 +82,9 @@ public class UserTrackSeeder {
         Track track29 = trackRepository.getByUrl("ToTinh-JBHaCuong-6183895.mp3");
         Track track30 = trackRepository.getByUrl("YeuLaThe-UMIERightTeeBPBOUNCE-6229650.mp3");
 
-        // //lưu vào pool kiểm tra lọc null
-        // saveTrackPool(trackPool, track1);
-        // saveTrackPool(trackPool, track2);
-        // saveTrackPool(trackPool, track3);
-        // saveTrackPool(trackPool, track4);
-        // saveTrackPool(trackPool, track5);
-        // saveTrackPool(trackPool, track6);
-        // saveTrackPool(trackPool, track7);
-        // saveTrackPool(trackPool, track8);
-        // saveTrackPool(trackPool, track9);
-        // saveTrackPool(trackPool, track10);
-        // saveTrackPool(trackPool, track11);
-        // saveTrackPool(trackPool, track12);
-        // saveTrackPool(trackPool, track13);
-        // saveTrackPool(trackPool, track14);
-        // saveTrackPool(trackPool, track15);
-        // saveTrackPool(trackPool, track16);
-        // saveTrackPool(trackPool, track17);
-        // saveTrackPool(trackPool, track18);
-        // saveTrackPool(trackPool, track19);
-        // saveTrackPool(trackPool, track20);
-        // saveTrackPool(trackPool, track21);
-        // saveTrackPool(trackPool, track22);
-        // saveTrackPool(trackPool, track23);
-        // saveTrackPool(trackPool, track24);
-        // saveTrackPool(trackPool, track25);
-        // saveTrackPool(trackPool, track26);
-        // saveTrackPool(trackPool, track27);
-        // saveTrackPool(trackPool, track28);
-        // saveTrackPool(trackPool, track29);
-        // saveTrackPool(trackPool, track30);
-
-
+        // artist
+        User artist1 = userRepository.findByEmail("artist1@gmail.com");
+        User artist2 = userRepository.findByEmail("artist2@gmail.com");
         // user
         User PhamQuynhAnh = userRepository.findByUsername("PhamQuynhAnh");
         User NQP = userRepository.findByUsername("NQP");

@@ -26,7 +26,7 @@ public class Role
     @JsonView({View.BasicUser.class, View.BasicTrack.class})
     private String name;
 
-    @ManyToMany(mappedBy="roles")
+    @ManyToMany(mappedBy="roles",cascade=CascadeType.ALL)
     private List<User> users;
 
     public Role(Long id, String name){

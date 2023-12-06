@@ -1,9 +1,14 @@
 package com.ivanpham.musicapi.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.ivanpham.musicapi.model.Playlist;
+import com.ivanpham.musicapi.model.PlaylistTrack;
 import com.ivanpham.musicapi.model.Track;
 import com.ivanpham.musicapi.model.View;
+import com.ivanpham.musicapi.repository.PlaylistRepository;
+import com.ivanpham.musicapi.repository.PlaylistTrackRepository;
 import com.ivanpham.musicapi.repository.TrackRepository;
+import com.ivanpham.musicapi.repository.UserRepository;
 import com.ivanpham.musicapi.service.TrackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -30,6 +35,15 @@ public class TrackController {
     @Autowired
     private TrackRepository trackRepository;
     private TrackService trackService;
+
+    @Autowired
+    private UserRepository userRepository2;
+
+    @Autowired
+    private PlaylistRepository playlistRepository;
+
+    @Autowired
+    private PlaylistTrackRepository playlistTrackRepository;
 
     @GetMapping
     @JsonView(View.BasicTrack.class)
@@ -91,6 +105,7 @@ public class TrackController {
     }
 
     @PostMapping
+    @JsonView(View.BasicTrack.class)
     public ResponseEntity<Track> addTrack(@RequestBody Track track) {
         try {
             Track savedTrack = trackRepository.save(track);
@@ -101,24 +116,87 @@ public class TrackController {
     }
 
     @PutMapping("/{id}")
+    @JsonView(View.BasicTrack.class)
     public ResponseEntity<Track> updateTrack(@PathVariable String id, @RequestBody Track updatedTrack) {
         Optional<Track> optionalTrack = trackRepository.findById(id);
+
         if (optionalTrack.isPresent()) {
-            updatedTrack.setId(id); // Make sure the updated track has the same ID
-            Track savedTrack = trackRepository.save(updatedTrack);
+//            updatedTrack.setId(id); // Make sure the updated track has the same ID
+//            Track savedTrack = trackRepository.save(updatedTrack);
+            Track savedTrack = optionalTrack.orElse(null);
+            savedTrack.setTrackName(updatedTrack.getTrackName());
+            savedTrack.setCreateAt(updatedTrack.getCreateAt());
+            savedTrack.setUpdateOn(updatedTrack.getUpdateOn());
+            savedTrack.setGenre(updatedTrack.getGenre());
+            trackRepository.save(savedTrack);
+
             return ResponseEntity.ok(savedTrack);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTrack(@PathVariable String id) {
-        if (trackRepository.existsById(id)) {
-            trackRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
+    // Xóa Track
+    @DeleteMapping("/{trackId}/deleteBy/{userId}")
+    public ResponseEntity<String> deleteTrack(@PathVariable String trackId, @PathVariable String userId) {
+        // Kiểm tra Album id này có tồn tại
+        if(trackRepository.existsById(trackId)) {
+            // User là Admin thì xóa
+            if (userRepository2.existsByIdAndRoleAdmin(userId)) { // Xem hàm này trong UserRepository2
+                trackRepository.deleteById(trackId);
+                return ResponseEntity.ok("Xóa thành công!");
+            }
+            // User là chủ sở hữu thì xóa
+            if (trackRepository.isOwner(trackId, userId)) { // Xem hàm trong trackRepository
+                trackRepository.deleteById(trackId);
+                return ResponseEntity.ok("Xóa thành công!");
+            }
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // Thêm Track vào Playlist trong Bảng Playlist_track
+    @PostMapping("/{trackId}/add-to-playlist/{playlistId}")
+    public ResponseEntity<String> addTrackToPlaylist(@PathVariable String trackId, @PathVariable String playlistId) {
+        // Find Track by ID
+        Track track = trackRepository.findById(trackId).orElse(null);
+        if (track == null) {
+            return ResponseEntity.badRequest().body("Không tìm thấy Track với id : " + trackId);
+        }
+        // Find Playlist by ID
+        Playlist playlist = playlistRepository.findById(playlistId).orElse(null);
+        if (playlist == null) {
+            return ResponseEntity.badRequest().body("Không tìm thấy Playlist với id : " + playlistId);
+        }
+        // Create PlaylistTrack and save to the database
+        PlaylistTrack playlistTrack = new PlaylistTrack(playlist, track);
+        playlistTrackRepository.save(playlistTrack);
+        return ResponseEntity.ok("Thêm Track vào Playlist thành công");
+    }
+
+    // Xóa Track khỏi 1 Playlist
+    @DeleteMapping("/{trackId}/remove-from-playlist/{playlistId}")
+    public ResponseEntity<String> removeTrackFromPlaylist(@PathVariable String trackId, @PathVariable String playlistId) {
+        // Find Track by ID
+        Track track = trackRepository.findById(trackId).orElse(null);
+        if (track == null) {
+            return ResponseEntity.badRequest().body("Không tìm tháy Track có id : " + trackId);
+        }
+
+        // Find Playlist by ID
+        Playlist playlist = playlistRepository.findById(playlistId).orElse(null);
+        if (playlist == null) {
+            return ResponseEntity.badRequest().body("Không tìm thấy Playlist có id : " + playlistId);
+        }
+
+        // Find and delete PlaylistTrack by Playlist and Track
+        PlaylistTrack playlistTrack = playlistTrackRepository.findByPlaylistAndTrack(trackId, playlistId);
+        if (playlistTrack != null) {
+            playlistTrackRepository.deleteById(playlistTrack.getId());
+            return ResponseEntity.ok("Xóa Track khỏi Playlist thành công");
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body("Không tìm thấy Playlist nào chứa Track này");
         }
     }
     @ResponseBody

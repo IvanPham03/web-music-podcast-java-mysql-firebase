@@ -63,6 +63,9 @@ public class Track {
     @JsonView({View.BasicTrack.class})
     private List<PlaylistTrack> playlistTracks = new ArrayList<>();
 
+    @OneToMany(mappedBy = "track", cascade = CascadeType.ALL)
+    private List<ArtistTrack> artistTracks;
+
     public Track(){
         this.description = null;
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
