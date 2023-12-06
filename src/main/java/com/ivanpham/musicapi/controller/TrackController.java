@@ -162,17 +162,42 @@ public class TrackController {
         // Find Track by ID
         Track track = trackRepository.findById(trackId).orElse(null);
         if (track == null) {
-            return ResponseEntity.badRequest().body("Track not found with ID: " + trackId);
+            return ResponseEntity.badRequest().body("Không tìm thấy Track với id : " + trackId);
         }
         // Find Playlist by ID
         Playlist playlist = playlistRepository.findById(playlistId).orElse(null);
         if (playlist == null) {
-            return ResponseEntity.badRequest().body("Playlist not found with ID: " + playlistId);
+            return ResponseEntity.badRequest().body("Không tìm thấy Playlist với id : " + playlistId);
         }
         // Create PlaylistTrack and save to the database
         PlaylistTrack playlistTrack = new PlaylistTrack(playlist, track);
         playlistTrackRepository.save(playlistTrack);
-        return ResponseEntity.ok("Track added to Playlist successfully.");
+        return ResponseEntity.ok("Thêm Track vào Playlist thành công");
+    }
+
+    // Xóa Track khỏi 1 Playlist
+    @DeleteMapping("/{trackId}/remove-from-playlist/{playlistId}")
+    public ResponseEntity<String> removeTrackFromPlaylist(@PathVariable String trackId, @PathVariable String playlistId) {
+        // Find Track by ID
+        Track track = trackRepository.findById(trackId).orElse(null);
+        if (track == null) {
+            return ResponseEntity.badRequest().body("Không tìm tháy Track có id : " + trackId);
+        }
+
+        // Find Playlist by ID
+        Playlist playlist = playlistRepository.findById(playlistId).orElse(null);
+        if (playlist == null) {
+            return ResponseEntity.badRequest().body("Không tìm thấy Playlist có id : " + playlistId);
+        }
+
+        // Find and delete PlaylistTrack by Playlist and Track
+        PlaylistTrack playlistTrack = playlistTrackRepository.findByPlaylistAndTrack(trackId, playlistId);
+        if (playlistTrack != null) {
+            playlistTrackRepository.deleteById(playlistTrack.getId());
+            return ResponseEntity.ok("Xóa Track khỏi Playlist thành công");
+        } else {
+            return ResponseEntity.badRequest().body("Không tìm thấy Playlist nào chứa Track này");
+        }
     }
 
 //
