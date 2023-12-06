@@ -105,7 +105,7 @@ public class UserController  {
     }
 
     //update
-    @PutMapping("/users/{id}")
+    @PutMapping("/users/{id}/")
     public ResponseEntity<?> updateUser(@PathVariable("id") String id, @RequestBody User updatedUser,@RequestParam String role) {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {

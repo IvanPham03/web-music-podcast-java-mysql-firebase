@@ -44,7 +44,7 @@ public class SpringConfig {
                 .cors(httpSecurityCorsConfigurer -> {
                     CorsConfiguration configuration = new CorsConfiguration();
                     configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-                    configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "Access-Control-Allow-Credentials"));
+                    configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "Access-Control-Allow-Credentials", "params"));
                     configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
                     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
                     source.registerCorsConfiguration("/**", configuration);
@@ -52,7 +52,7 @@ public class SpringConfig {
                 })
                 .csrf((csrf) -> csrf.disable())
                 .authorizeHttpRequests((authorize) -> {
-                    authorize.requestMatchers("/abcsxy").authenticated();
+                    authorize.requestMatchers("/").authenticated();
                     authorize.requestMatchers("/admin/**").hasRole("ADMIN");
                     authorize.anyRequest().permitAll();
 

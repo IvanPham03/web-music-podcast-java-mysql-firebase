@@ -121,7 +121,17 @@ public class TrackController {
             return ResponseEntity.notFound().build();
         }
     }
+    @ResponseBody
+    @GetMapping("/search")
+    public List<Track> searchTrack( @RequestParam("keywords") Optional<String> keyword){
+        System.out.println(keyword);
+        List<Track> list = this.trackRepository.findAll();
+        if(keyword.isPresent()){
+            list = this.trackRepository.searchTrack(keyword.orElse(""));
 
+        }
+        return list;
+    }
 //
 //    @GetMapping
 //    @ResponseBody
