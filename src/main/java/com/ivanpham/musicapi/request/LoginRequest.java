@@ -1,7 +1,7 @@
 package com.ivanpham.musicapi.request;
 
-import javax.validation.constraints.*;
-
+//import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 public record LoginRequest(
         @NotBlank(message="Email không được bỏ trống")
         @Email(message = "Email không hợp lệ")

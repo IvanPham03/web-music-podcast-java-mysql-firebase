@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.*;
 
@@ -76,7 +77,8 @@ public class PlaylistController {
 
     // UPDATE
     @PutMapping("/update/{playlistId}/by/{userId}")
-    public ResponseEntity<Playlist> updatePlaylist(@PathVariable String playlistId, @PathVariable String userId, @RequestBody Playlist playlist) {
+    @JsonView(View.BasicPlaylist.class)
+    public ResponseEntity<Playlist> updatePlaylist(@PathVariable String playlistId, @PathVariable String userId,@Valid @RequestBody Playlist playlist) {
         Optional<Playlist> optionalPlaylist = playlistRepository.findById(playlistId);
         if(optionalPlaylist.isPresent()) {
             // Kiểm tra xem userId này có phải là admin không?

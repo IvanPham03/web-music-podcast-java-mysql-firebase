@@ -10,8 +10,10 @@ import com.ivanpham.musicapi.service.AlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,12 +54,15 @@ public class AlbumController {
 
     // CHỈNH SỬA
     @PutMapping("/update/{albumId}/by/{userId}")
-    public ResponseEntity<Album> editAlbum(@PathVariable String albumId, @PathVariable String userId, @RequestBody Album album) {
+    @JsonView(View.BasicAlbum.class)
+    public ResponseEntity<Album> editAlbum(@PathVariable String albumId, @PathVariable String userId,@Valid @RequestBody Album album) {
         Optional<Album> optionalAlbum = albumRepository.findById(albumId);
         if(optionalAlbum.isPresent()) {
             // Kiểm tra xem userId này có phải là admin không?
             // - True : thì được update
+//            System.out.println("Album có tồn tại");
             if (userRepository2.existsByIdAndRoleAdmin(userId)) {
+//                System.out.println("là admin");
                 album.setId(albumId);
                 album.setCreateAt(optionalAlbum.get().getCreateAt());
                 album.setUser(optionalAlbum.get().getUser());
@@ -67,6 +72,7 @@ public class AlbumController {
             // Kiểm tra xem userId này có phải là người sở hữu không?
             // - True : thì được update
             if(albumService.isOwner(albumId, userId)) {
+//                System.out.println("không là admin");
                 album.setId(albumId);
                 album.setCreateAt(optionalAlbum.get().getCreateAt());
                 album.setUser(optionalAlbum.get().getUser());

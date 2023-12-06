@@ -1,5 +1,6 @@
 package com.ivanpham.musicapi.controller;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.ivanpham.musicapi.model.Playlist;
 import com.ivanpham.musicapi.model.User;
 import com.ivanpham.musicapi.model.View;
 import com.ivanpham.musicapi.repository.RoleRepository;
@@ -81,6 +82,19 @@ public class UserController  {
         }
         return new ResponseEntity<>("not found token", HttpStatus.BAD_REQUEST);
     }
+
+    // Search User
+    @GetMapping("/users/search")
+    @JsonView(View.BasicUserId.class)
+    public List<User> searchPlaylistByName(@RequestParam String keyword) {
+        if (keyword != null) {
+            return userRepository.searchByUserName(keyword);
+        }
+        else{
+            return userRepository.findAll();
+        }
+    }
+
     // tạo người dùng mới
     @PostMapping("register")
     public ResponseEntity<?> createUser(@RequestBody User newUser) {
@@ -131,4 +145,5 @@ public class UserController  {
 
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
+
 }
