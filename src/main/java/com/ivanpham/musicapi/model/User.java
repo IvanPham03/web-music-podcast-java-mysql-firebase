@@ -78,6 +78,7 @@ public class User {
     private List<Track> tracks = new ArrayList<>();
 
     //
+
     @OneToMany(mappedBy = "user",cascade=CascadeType.ALL)
     @JsonView(View.BasicUser.class)
     private List<UserPlaylist> userPlaylists = new ArrayList<>();
