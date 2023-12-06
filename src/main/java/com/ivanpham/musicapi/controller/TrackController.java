@@ -1,8 +1,12 @@
 package com.ivanpham.musicapi.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.ivanpham.musicapi.model.Playlist;
+import com.ivanpham.musicapi.model.PlaylistTrack;
 import com.ivanpham.musicapi.model.Track;
 import com.ivanpham.musicapi.model.View;
+import com.ivanpham.musicapi.repository.PlaylistRepository;
+import com.ivanpham.musicapi.repository.PlaylistTrackRepository;
 import com.ivanpham.musicapi.repository.TrackRepository;
 import com.ivanpham.musicapi.repository.UserRepository;
 import com.ivanpham.musicapi.service.TrackService;
@@ -34,6 +38,12 @@ public class TrackController {
 
     @Autowired
     private UserRepository userRepository2;
+
+    @Autowired
+    private PlaylistRepository playlistRepository;
+
+    @Autowired
+    private PlaylistTrackRepository playlistTrackRepository;
 
     @GetMapping
     @JsonView(View.BasicTrack.class)
@@ -144,6 +154,25 @@ public class TrackController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    // Thêm Track vào Playlist trong Bảng Playlist_track
+    @PostMapping("/{trackId}/add-to-playlist/{playlistId}")
+    public ResponseEntity<String> addTrackToPlaylist(@PathVariable String trackId, @PathVariable String playlistId) {
+        // Find Track by ID
+        Track track = trackRepository.findById(trackId).orElse(null);
+        if (track == null) {
+            return ResponseEntity.badRequest().body("Track not found with ID: " + trackId);
+        }
+        // Find Playlist by ID
+        Playlist playlist = playlistRepository.findById(playlistId).orElse(null);
+        if (playlist == null) {
+            return ResponseEntity.badRequest().body("Playlist not found with ID: " + playlistId);
+        }
+        // Create PlaylistTrack and save to the database
+        PlaylistTrack playlistTrack = new PlaylistTrack(playlist, track);
+        playlistTrackRepository.save(playlistTrack);
+        return ResponseEntity.ok("Track added to Playlist successfully.");
     }
 
 //
