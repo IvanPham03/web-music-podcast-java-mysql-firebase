@@ -206,9 +206,16 @@ public class TrackController {
         List<Track> list = this.trackRepository.findAll();
         if(keyword.isPresent()){
             list = this.trackRepository.searchTrack(keyword.orElse(""));
-
+    // Lấy Track theo Playlist Id
+    @GetMapping("/byPlaylist/{playlistId}")
+    @JsonView(View.BasicTrack.class)
+    public ResponseEntity<List<Track>> getTrackByPlaylistId(@PathVariable String playlistId) {
+        List<Track> trackByPlaylistId = trackRepository.findTrackByPlaylistId(playlistId);
+        if (trackByPlaylistId != null) {
+            return ResponseEntity.ok(trackByPlaylistId);
+        } else {
+            return ResponseEntity.notFound().build();
         }
-        return list;
     }
 //
 //    @GetMapping
