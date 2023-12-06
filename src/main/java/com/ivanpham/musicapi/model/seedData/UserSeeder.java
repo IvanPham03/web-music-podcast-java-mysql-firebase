@@ -68,6 +68,27 @@ public class UserSeeder {
        User user5 = new User("user5@gmail.com", "user5", passwordEncoder.encode("user5"), Arrays.asList(role_user));
        User user6 = new User("user6@gmail.com", "user6", passwordEncoder.encode("user6"), Arrays.asList(role_user));
 
+       User PhamQuynhAnh = new User("PhamQuynhAnh@gmail.com", "PhamQuynhAnh", passwordEncoder.encode("123123"), Arrays.asList(role_artist));
+       User NQP = new User("NQP@gmail.com", "NQP", passwordEncoder.encode("123123"), Arrays.asList(role_artist));
+       User ChauKhaiPhong = new User("ChauKhaiPhong@gmail.com", "ChauKhaiPhong", passwordEncoder.encode("123123"), Arrays.asList(role_artist));
+       User Keyo = new User("Keyo@gmail.com", "Keyo", passwordEncoder.encode("123123"), Arrays.asList(role_artist));
+       User TrangHan = new User("TrangHan@gmail.com", "TrangHan", passwordEncoder.encode("123123"), Arrays.asList(role_artist));
+       User Seachain = new User("Seachain@gmail.com", "Seachain", passwordEncoder.encode("123123"), Arrays.asList(role_artist));
+       User EmD = new User("EmD@gmail.com", "EmD", passwordEncoder.encode("123123"), Arrays.asList(role_artist));
+       User QuocAnh = new User("QuocAnh@gmail.com", "QuocAnh", passwordEncoder.encode("123123"), Arrays.asList(role_artist));
+       User LinhQueen = new User("LinhQueen@gmail.com", "LinhQueen", passwordEncoder.encode("123123"), Arrays.asList(role_artist));
+       User Misabae = new User("Misabae@gmail.com", "Misabae", passwordEncoder.encode("123123"), Arrays.asList(role_artist));
+       User LangLD = new User("LangLD@gmail.com", "LangLD", passwordEncoder.encode("123123"), Arrays.asList(role_artist));
+       User DinhUyen = new User("DinhUyen@gmail.com", "DinhUyen", passwordEncoder.encode("123123"), Arrays.asList(role_artist));
+       User TheSheep = new User("TheSheep@gmail.com", "TheSheep", passwordEncoder.encode("123123"), Arrays.asList(role_artist));
+       User Orange = new User("Orange@gmail.com", "Orange", passwordEncoder.encode("123123"), Arrays.asList(role_artist));
+       User MyMy = new User("MyMy@gmail.com", "MyMy", passwordEncoder.encode("123123"), Arrays.asList(role_artist));
+       User HoangPhuong = new User("HoangPhuong@gmail.com", "HoangPhuong", passwordEncoder.encode("123123"), Arrays.asList(role_artist));
+       User RickyStar = new User("RickyStar@gmail.com", "RickyStar", passwordEncoder.encode("123123"), Arrays.asList(role_artist));
+       User Rhy = new User("Rhy@gmail.com", "Rhy", passwordEncoder.encode("123123"), Arrays.asList(role_artist));
+       User JBHaCuong = new User("JBHaCuong@gmail.com", "JBHaCuong", passwordEncoder.encode("123123"), Arrays.asList(role_artist));
+       User Umie = new User("Umie@gmail.com", "Umie", passwordEncoder.encode("123123"), Arrays.asList(role_artist));
+
         users.add(user1);
         users.add(admin1);
         users.add(user2);
@@ -85,6 +106,27 @@ public class UserSeeder {
        users.add(user4);
        users.add(user5);
        users.add(user6);
+
+       users.add(PhamQuynhAnh);
+       users.add(NQP);
+       users.add(ChauKhaiPhong);
+       users.add(Keyo);
+       users.add(TrangHan);
+       users.add(Seachain);
+       users.add(EmD);
+       users.add(QuocAnh);
+       users.add(LinhQueen);
+       users.add(Misabae);
+       users.add(LangLD);
+       users.add(DinhUyen);
+       users.add(TheSheep);
+       users.add(Orange);
+       users.add(MyMy);
+       users.add(HoangPhuong);
+       users.add(RickyStar);
+       users.add(Rhy);
+       users.add(JBHaCuong);
+       users.add(Umie);
 
         return users;
     }
