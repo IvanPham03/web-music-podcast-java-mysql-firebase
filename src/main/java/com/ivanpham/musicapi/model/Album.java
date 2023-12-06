@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+import jakarta.validation.constraints.NotBlank;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -26,9 +28,11 @@ public class Album {
     private String id = UUID.randomUUID().toString();
     @Column(name = "album_name")
     @JsonView({View.BasicAlbum.class, View.BasicTrack.class})
+    @NotBlank(message = "Album Name không được null hoặc trống")
     private String albumName;
     @Column(name = "album_genre")
     @JsonView({View.BasicTrack.class, View.BasicAlbum.class})
+    @NotBlank(message = "Album Genre không được null hoặc trống")
     private String albumGenre;
     @Column(name = "createAt")
     @JsonView({View.BasicAlbum.class, View.BasicTrack.class})
@@ -39,7 +43,7 @@ public class Album {
     @Column(name = "policy")
     @JsonView({View.BasicAlbum.class, View.BasicTrack.class})
     private String albumPolicy;
-    @OneToMany(mappedBy = "album")
+    @OneToMany(mappedBy = "album",cascade=CascadeType.ALL)
     @JsonView({View.BasicAlbum.class})
     private List<AlbumTrack> albumTracks = new ArrayList<>();
     @ManyToOne

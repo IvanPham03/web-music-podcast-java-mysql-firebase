@@ -9,6 +9,8 @@
     import lombok.NoArgsConstructor;
     import lombok.Setter;
 
+    import jakarta.validation.constraints.NotBlank;
+
     import java.text.SimpleDateFormat;
     import java.util.*;
 
@@ -25,6 +27,7 @@
         @JsonView({View.BasicPlaylist.class, View.BasicUser.class, View.BasicTrack.class})
         private String id = UUID.randomUUID().toString();
         @Column(name = "playlistName")
+        @NotBlank(message = "Playlist Name không được trống hay null")
         @JsonView({View.BasicPlaylist.class, View.BasicUser.class, View.BasicTrack.class})
         private String playlistName;
         @Column(name = "playlistDescription")
@@ -45,10 +48,10 @@
         private String playlistPolicy;
 
 
-        @OneToMany(mappedBy = "playlist")
+        @OneToMany(mappedBy = "playlist",cascade=CascadeType.ALL)
         private List<UserPlaylist> userPlaylists = new ArrayList<>();
 
-        @OneToMany(mappedBy = "playlist")
+        @OneToMany(mappedBy = "playlist",cascade=CascadeType.ALL)
         @JsonView({View.BasicPlaylist.class, View.BasicUser.class})
         private List<PlaylistTrack> playlistTracks = new ArrayList<>();
         @ManyToOne

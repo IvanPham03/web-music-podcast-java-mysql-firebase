@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.*;
 
@@ -64,7 +65,7 @@ public class PlaylistController {
     // THÊM
     @PostMapping("/create/{userId}")
     @JsonView(View.BasicPlaylist.class)
-    public ResponseEntity<Playlist> createNewPlaylist(@RequestBody Playlist playlist, @PathVariable String userId){
+    public ResponseEntity<Playlist> createNewPlaylist(@Valid @RequestBody Playlist playlist, @PathVariable String userId){
         // tạo một Playlist mới đính kèm theo userId của người tạo ra Playlist đó
         try {
             Playlist savePlaylist = playlistService.createPlaylist(playlist,userId); // xem hàm này trong AlbumServiceImpl
@@ -76,7 +77,8 @@ public class PlaylistController {
 
     // UPDATE
     @PutMapping("/update/{playlistId}/by/{userId}")
-    public ResponseEntity<Playlist> updatePlaylist(@PathVariable String playlistId, @PathVariable String userId, @RequestBody Playlist playlist) {
+    @JsonView(View.BasicPlaylist.class)
+    public ResponseEntity<Playlist> updatePlaylist(@PathVariable String playlistId, @PathVariable String userId,@Valid @RequestBody Playlist playlist) {
         Optional<Playlist> optionalPlaylist = playlistRepository.findById(playlistId);
         if(optionalPlaylist.isPresent()) {
             // Kiểm tra xem userId này có phải là admin không?
