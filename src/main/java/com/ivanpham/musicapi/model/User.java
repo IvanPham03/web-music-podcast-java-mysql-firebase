@@ -69,23 +69,23 @@ public class User {
 
 
     // nhiều nhièu bằng bảng trung gian có nghĩa là nhiều nghệ sĩ 1 bài, 1 bài nhiều nghệ sĩ
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade=CascadeType.ALL)
     @JsonView(View.BasicUser.class)
     private List<UserTrack> userTracks = new ArrayList<>();
 
     // 1 nhiều user - track (có nghĩa là người upload)
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade=CascadeType.ALL)
     private List<Track> tracks = new ArrayList<>();
 
-    //
-    @OneToMany(mappedBy = "user")
+
+    @OneToMany(mappedBy = "user",cascade=CascadeType.ALL)
     @JsonView(View.BasicUser.class)
     private List<UserPlaylist> userPlaylists = new ArrayList<>();
     // 1 nhiều user - album
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade=CascadeType.ALL)
     private List<Album> albums = new ArrayList<>();
     // 1 nhieu play list
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade=CascadeType.ALL)
     private List<Playlist> playlists = new ArrayList<>();
     public User(String email, String username, String password, List<Role> roles) {
         this.email = email;

@@ -1,6 +1,7 @@
 package com.ivanpham.musicapi.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.ivanpham.musicapi.model.Playlist;
+import com.ivanpham.musicapi.model.Role;
 import com.ivanpham.musicapi.model.User;
 import com.ivanpham.musicapi.model.View;
 import com.ivanpham.musicapi.repository.RoleRepository;
@@ -105,7 +106,7 @@ public class UserController  {
 
     //update
     @PutMapping("/users/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable("id") String id, @RequestBody User updatedUser) {
+    public ResponseEntity<?> updateUser(@PathVariable("id") String id, @RequestBody User updatedUser,@RequestParam String role) {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             User existingUser = optionalUser.get();
@@ -113,6 +114,15 @@ public class UserController  {
             existingUser.setUsername(updatedUser.getUsername());
             existingUser.setEmail(updatedUser.getEmail());
             // Update other user fields similarly
+            List<Role> checkRoles = roleRepository.findAll();
+            for (Role checkRole : checkRoles) {
+                if (role.equalsIgnoreCase(checkRole.getName())) {
+                    List<Role> updatedRoles = new ArrayList<>();
+                    updatedRoles.add(checkRole);
+                    existingUser.setRoles(updatedRoles);
+                    break;
+                }
+            }
 
             userRepository.save(existingUser);
             return ResponseEntity.ok("User updated successfully!");

@@ -44,8 +44,7 @@ public class Track {
     @Column(name = "genre")
     @JsonView({View.BasicPlaylist.class, View.BasicAlbum.class, View.BasicUser.class, View.BasicTrack.class})
     private String genre;
-    @JsonView(View.BasicTrack.class)
-    @OneToMany(mappedBy = "track")
+    @OneToMany(mappedBy = "track",cascade=CascadeType.ALL)
     private List<UserTrack> userTracks = new ArrayList<>();
 
 
@@ -55,11 +54,11 @@ public class Track {
     private User user;
 
 
-    @OneToMany(mappedBy = "track")
+    @OneToMany(mappedBy = "track",cascade=CascadeType.ALL)
     @JsonView({View.BasicTrack.class})
     private List<AlbumTrack> albumTracks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "track")
+    @OneToMany(mappedBy = "track",cascade=CascadeType.ALL)
     @JsonView({View.BasicTrack.class})
     private List<PlaylistTrack> playlistTracks = new ArrayList<>();
 
