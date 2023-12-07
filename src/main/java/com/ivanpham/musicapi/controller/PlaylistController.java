@@ -48,6 +48,7 @@ public class PlaylistController {
         return playlistService.getPublicPlaylists();
     }
 
+
     // Trả về PlayList của người dùng (Tạo hoặc Follow)
     @GetMapping("/getAllPlaylistByUserId/{userId}")
     @JsonView(View.BasicPlaylist.class)

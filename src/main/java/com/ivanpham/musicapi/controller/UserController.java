@@ -99,7 +99,7 @@ public class UserController  {
     // tạo người dùng mới
     @PostMapping("register")
     public ResponseEntity<?> createUser(@RequestBody User newUser) {
-//        System.out.println(newUser.toString());
+        System.out.println(newUser.toString());
         authService.createUser(newUser);
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);
     }

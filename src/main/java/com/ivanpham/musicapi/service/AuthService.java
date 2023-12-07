@@ -106,7 +106,9 @@ public class AuthService {
             userRepository.save(newUser);
 
         } catch (Exception e) {
+
             System.out.println("Method createUser has error " + newUser.getUsername() +" " + (newUser.getPassword()) +" " + newUser.getEmail());
+            System.out.println("Method createUser has error " + e.getMessage());
         }
     }
     private Role checkRoleExist() {
